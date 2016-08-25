@@ -1,9 +1,5 @@
 app.service('addPhotoService', ['$cordovaCamera', '$http', function($cordovaCamera, $http) {
-
   var sv = this;
-  sv.picture = {
-    avatar: ''
-  };
   //this method will open the camera app. after a photo is taken the user will crop it. It returns a promise with the data being the base64 encoded image
   sv.takePicture = function() {
     console.log('taking photo!');
@@ -11,17 +7,14 @@ app.service('addPhotoService', ['$cordovaCamera', '$http', function($cordovaCame
       destinationType: Camera.DestinationType.DATA_URL,
       sourceType: Camera.PictureSourceType.CAMERA,
       encodingType: Camera.EncodingType.JPEG,
-      allowEdit: true,
-      targetWidth: 1200,
-      targetHeight: 800,
+      popoverOptions: CameraPopoverOptions,
+      allowEdit: 1,
       saveToPhotoAlbum: false,
 	    correctOrientation:true
     };
-    console.log('options: ', options);
     return $cordovaCamera.getPicture(options)
-      .then(function(data) {
-        console.log('data:', 'data:image/jpeg;base64,' + data);
-        return 'data:image/jpeg;base64,' + data;
+    .then(function(data) {
+      return 'data:image/jpeg;base64,' + data;
       });
   };
 
@@ -36,28 +29,19 @@ app.service('addPhotoService', ['$cordovaCamera', '$http', function($cordovaCame
       });
   };
 
-  sv.takeAndSend = function(){
 
-  }
-
-  sv.takeAndSubmit = function() {
+  sv.takeAndSend = function() {
    var url;
      sv.takePicture()
        .then(function(image) {
          return sv.uploadPicture(image);
        })
        .then(function(_url) {
-         url = _url;
-         return sv.sendPicture(number, username + ' has submitted the following picture of ' + taskName + ' for review');
-       })
-       .then(function() {
-         return sv.sendPicture(number, url);
-       })
-       .then(function() {
-         alert(taskName + ' was successfully submitted.');
-       })
+        url = _url;
+        console.log('url:', _url);
+      })
        .catch(function(err) {
-         alert('there was an issue submitting ' + taskName);
+         console.log('error', err);
        });
  };
 

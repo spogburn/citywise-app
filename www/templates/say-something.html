@@ -25,7 +25,8 @@
     <textarea id="txtnotes"></textarea>
   </label>
 
-  <button class="button button-dark button-block" ng-click="SS.takePicture()">Take a photo</button>
+  <button class="button button-dark button-block" ng-show="SS.showPhotoButton" ng-click="SS.takePicture()">Take a photo</button>
+  <button class="button button-assertive button-block" ng-hide="SS.showPhotoButton">Submit your saySomething!</button>
 
 
 </div>
