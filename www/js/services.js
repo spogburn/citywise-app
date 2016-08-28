@@ -46,3 +46,29 @@ app.service('addPhotoService', ['$cordovaCamera', '$http', function($cordovaCame
  };
 
 }])
+
+
+app.service('submitService', ['$cordovaGeolocation', '$http', function($cordovaGeolocation, $http){
+  var sv = this;
+  var lat = '';
+  var long = ''
+
+  sv.submit = function(form){
+    // get user location in lt and long
+    var posOptions = {timeout: 10000, enableHighAccuracy: false};
+     $cordovaGeolocation
+     .getCurrentPosition(posOptions)
+     .then(function(position) {
+       form.lat =  position.coords.latitude;;
+       form.long = position.coords.longitude;
+       console.log('form', form);
+       $http.post('http://localhost:3000/api/say-something', form);
+        console.log(lat + '   ' + long);
+     }).catch(function(err){
+       console.log('error in obtaining location or submitting form', err);
+     })
+
+  }
+
+
+}])

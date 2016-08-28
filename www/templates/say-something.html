@@ -1,33 +1,41 @@
 <ion-content>
-<div class="list">
-  <label class="item item-input item-select">
-  <div class="input-label">City
-  <select>
-    <option>Fort Collins</option>
-    <option>Boulder</option>
-    <option>Denver</option>
-  </select>
+<form novalidate name="ssform">
+  <div class="list">
+    <label class="item item-input item-select">
+    <div class="input-label">City
+    <select name="ssCity" ng-model="form.city">
+      <option>Fort Collins</option>
+      <option>Boulder</option>
+      <option>Denver</option>
+    </select>
+    </div>
+    </label>
+
+    <label class="item item-input item-select">
+    <div class="input-label">Category
+    <select name="ssCategory" ng-model="form.category">
+      <option>Roads</option>
+      <option>Sanitation</option>
+      <option>Public Safety</option>
+    </select>
+    </div>
+    </label>
+
+    <label class="item item-input">
+      <span class="input-label">Title</span>
+      <input name="ssTitle" ng-model="form.title"/>
+    </label>
+
+    <label class="item item-input">
+      <span class="input-label">Comments</span>
+      <textarea id="txtnotes" name="ssComments" ng-model="form.comment"></textarea>
+    </label>
+
+<!--
+    <button class="button button-dark button-block" ng-show="SS.showPhotoButton" ng-click="SS.takePicture()">Take a photo</button> -->
+    <button class="button button-assertive button-block" ng-show="SS.showPhotoButton" ng-click="SS.submit(form)">Submit your saySomething!  </button>
+
+
   </div>
-  </label>
-
-  <label class="item item-input item-select">
-  <div class="input-label">Category
-  <select>
-    <option>Roads</option>
-    <option>Sanitation</option>
-    <option>Public Safety</option>
-  </select>
-  </div>
-  </label>
-
-  <label class="item item-input">
-    <span class="input-label">Comments</span>
-    <textarea id="txtnotes"></textarea>
-  </label>
-
-  <button class="button button-dark button-block" ng-show="SS.showPhotoButton" ng-click="SS.takePicture()">Take a photo</button>
-  <button class="button button-assertive button-block" ng-hide="SS.showPhotoButton">Submit your saySomething!</button>
-
-
-</div>
+</form>
 </ion-content>

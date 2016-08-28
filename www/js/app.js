@@ -60,7 +60,7 @@ app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider){
 })
 
 /* aps is short for addPhotoSrvice */
-app.controller('SaySomethingController', ['$http', 'addPhotoService', function($http, aps){
+app.controller('SaySomethingController', ['$http', 'addPhotoService', 'submitService', '$cordovaGeolocation', function($http, aps, ss, $cordovaGeolocation){
   var vm = this;
   vm.picture = '';
   vm.showPhotoButton = true;
@@ -72,6 +72,7 @@ app.controller('SaySomethingController', ['$http', 'addPhotoService', function($
     console.log('new picture:', vm.picture);
   });
 }
+  vm.submit = ss.submit;
 }])
 
 app.controller('HomeController', ['$http', function($http){
@@ -79,47 +80,38 @@ app.controller('HomeController', ['$http', function($http){
 }])
 
 app.controller('LoginController', ['$state', '$http', '$cordovaOauth', function($state, $http, $cordovaOauth){
-  var CLIENT_ID = '386825602244-09eg7osmai1qi07nbo9maefjpff7h0dm.apps.googleusercontent.com'
+
+  var CLIENT_ID = '386825602244-09eg7osmai1qi07nbo9maefjpff7h0dm.apps.googleusercontent.com';
   var vm = this;
-  vm.login = function(user){
-    console.log('logging in');
-    $state.go('tabs.home')
-  }
+  vm.googleLogin = function() {
 
-  // vm.googleLogin = function() {
-  //     $cordovaOauth.google(CLIENT_ID, ["email", "profile"]).then(function(result) {
-  //         vm.details = result.access_token;
-  //         console.log(vm.details);
-  //         vm.showProfile = false;
-  //       $http.get("http://localhost:8000/callback", {params: {access_token: vm.details }})
-  //       .then(function(res) {
-  //        vm..showProfile = true;
-  //        vm.data = res.data;
-  //     }, function(error) {
-  //         console.log('error:', error);
-  //     });
-
-
-      vm.googleLogin = function(){
-
-      $cordovaOauth.google(CLIENT_ID, ["email","profile"]).then(function(result) {
-          vm.showProfile = false;
-          $http.get("https://www.googleapis.com/plus/v1/people/me", {params: {access_token: result.access_token }})
-          .then(function(res) {
-
-           vm.showProfile = true;
-           vm.details = res.data;
-           console.log('details: ', vm.details);
-
-          }, function(error) {
-              alert("Error: " + error);
-          });
-
-      },function(error) {
-            // error
-            vm.details = 'got error';
-            console.log('error:', error);
-        });
-
+      $cordovaOauth.google(CLIENT_ID, ["https://www.googleapis.com/auth/userinfo.email"])
+      .then(function(result) {
+      $http.post('http://localhost:3000/google-login', result)
+    }), function(error) {
+          console.log('error:', error);
+      };
   }
 }])
+  //     vm.googleLogin = function(){
+  //
+  //     $cordovaOauth.google(CLIENT_ID, ["email","profile"]).then(function(result) {
+  //         vm.showProfile = false;
+  //         $http.get("https://www.googleapis.com/plus/v1/people/me", {params: {access_token: result.access_token }})
+  //         .then(function(res) {
+  //
+  //          vm.showProfile = true;
+  //          vm.details = res.data;
+  //          console.log('details: ', vm.details);
+  //
+  //         }, function(error) {
+  //             alert("Error: " + error);
+  //         });
+  //
+  //     },function(error) {
+  //           // error
+  //           vm.details = 'got error';
+  //           console.log('error:', error);
+  //       });
+  //
+  // }
