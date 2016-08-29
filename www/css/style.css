@@ -1,1 +1,12 @@
 /* Empty. Add your own CSS if you like */
+
+
+/* login screen background image */
+.background.scroll-content {
+    background: url("../img/pexels-photo-68257.jpg") no-repeat;
+    background-size: cover;
+}
+
+.yellow-pane {
+  background: rgba(255, 201, 0, .5);
+}

@@ -3,7 +3,7 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-var app = angular.module('saySomething', ['ionic', 'ngCordova', 'ngCordovaOauth'])
+var app = angular.module('saySomething', ['ionic', 'ngCordova', 'ngCordovaOauth', 'ngStorage'])
 
 app.run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -59,40 +59,29 @@ app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider){
   $urlRouterProvider.otherwise('/login')
 })
 
-/* aps is short for addPhotoSrvice */
-app.controller('SaySomethingController', ['$http', 'addPhotoService', 'submitService', '$cordovaGeolocation', function($http, aps, ss, $cordovaGeolocation){
-  var vm = this;
-  vm.picture = '';
-  vm.showPhotoButton = true;
-  vm.takePicture = function(){
-    aps.takePicture()
-    .then(function(image){
-    vm.picture = image;
-    vm.showPhotoButton = false;
-    console.log('new picture:', vm.picture);
-  });
-}
-  vm.submit = ss.submit;
-}])
 
-app.controller('HomeController', ['$http', function($http){
-  var vm = this;
-}])
+app.factory('authInterceptor', ['$q', '$window', function ($q, $window) {
+  return {
+    request: function (config) {
+      config.headers = config.headers || {};
+      if ($window.sessionStorage.token) {
+        config.headers.Authorization = 'Bearer ' + $window.sessionStorage.token;
+      }
+      return config;
+    },
+    response: function (response) {
+      if (response.status === 401) {
+        // handle the case where the user is not authenticated
+      }
+      return response || $q.when(response);
+    }
+  };
+}]);
 
-app.controller('LoginController', ['$state', '$http', '$cordovaOauth', function($state, $http, $cordovaOauth){
+app.config(['$httpProvider', function ($httpProvider) {
+  $httpProvider.interceptors.push('authInterceptor');
+}]);
 
-  var CLIENT_ID = '386825602244-09eg7osmai1qi07nbo9maefjpff7h0dm.apps.googleusercontent.com';
-  var vm = this;
-  vm.googleLogin = function() {
-
-      $cordovaOauth.google(CLIENT_ID, ["https://www.googleapis.com/auth/userinfo.email"])
-      .then(function(result) {
-      $http.post('http://localhost:3000/google-login', result)
-    }), function(error) {
-          console.log('error:', error);
-      };
-  }
-}])
   //     vm.googleLogin = function(){
   //
   //     $cordovaOauth.google(CLIENT_ID, ["email","profile"]).then(function(result) {
