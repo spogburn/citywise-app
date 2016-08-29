@@ -4,9 +4,23 @@
 /* login screen background image */
 .background.scroll-content {
     background: url("../img/pexels-photo-68257.jpg") no-repeat;
+    background-color: rgb(184, 147, 12);
+    background-blend-mode: multiply;
     background-size: cover;
 }
 
 .yellow-pane {
-  background: rgba(255, 201, 0, .5);
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.title {
+  color: black;
+}
+
+h3 {
+  margin-top: 0;
+}
+
+.question {
+  margin-bottom: 20px;
 }

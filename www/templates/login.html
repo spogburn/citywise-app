@@ -1,26 +1,26 @@
 <ion-view view-title="Login" name="login-view">
-  <div class="bar bar-header bar-energized">
-    <h1 class="title">CityWise</h1>
+  <div class="bar bar-header">
+    <h1 class="title">CityWise. Help your city wise up</h1>
   </div>
-  <ion-content class="padding background has-header">
-    <ion-pane class="pane yellow-pane padding">
-      <ul>
-        <li><h3>Busted street sign? <br>
-          Report it.</h3></li>
-        <li><h3>Car-swallowing pothole? <br>
-          Tell them where.</h3></li>
-        <li><h3>Graffiti near your business?<br>
-           Send a report.</h3></li>
-      </ul>
-      <p>You're the expert on your city. Help make it wiser by sharing your knowledge with local officials. </p>
-      <p><strong>It's simple.</strong></p>
-      <p>Log in to CityWise with Google. Select your city and the kind of issue you're reporting. Add a description, a location and a photo if you want.</p>
-      <p><strong>Then hit send.</strong></p>
-      <p>You've just made your city that much wiser.</p>
-      <button class="button button-block button-energized" ng-click="LC.googleLogin()"><h4>Login with Google</h4></button>
-    </ion-pane>
-
-
-      <!-- <img src="img/city-crossing-crossroad-road.jpg" alt="city" /> -->
-  </ion-content>
+    <ion-content class="padding background scroll-content ionic-scroll overflow-scroll has-header">
+      <div class="scroll">
+        <ion-pane class="pane yellow-pane padding">
+          <ul>
+            <li class=
+            "question"><h5><strong>Busted street sign?</strong></h5>
+              <h3>Report it.</h3></li>
+            <li class="question"><h5><strong>Car-swallowing pothole?</strong></h5>
+              <h3>Tell them where.</h3></li>
+            <li class="question"><h5><strong>Broken playground swing?</strong></h5>
+               <h3>Send a heads-up.</h3></li>
+          </ul>
+          <p>You're the expert on your city. Help it wise up by sharing your knowledge with local officials. </p>
+          <p><strong>It's simple.</strong></p>
+          <p>Log in to CityWise with Google. Select your city and the kind of issue you're reporting. Add a description, a location and a photo if you want.</p>
+          <p><strong>Then hit send.</strong></p>
+          <p>Ready?</p>
+          <button class="button button-block button-energized" ng-click="LC.googleLogin()"><h4>Login with Google</h4></button>
+        </ion-pane>
+      </div>
+    </ion-content>
 </ion-view>

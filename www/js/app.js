@@ -3,7 +3,7 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-var app = angular.module('saySomething', ['ionic', 'ngCordova', 'ngCordovaOauth', 'ngStorage'])
+var app = angular.module('saySomething', ['ionic', 'ngCordova', 'ngCordovaOauth'])
 
 app.run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -64,8 +64,8 @@ app.factory('authInterceptor', ['$q', '$window', function ($q, $window) {
   return {
     request: function (config) {
       config.headers = config.headers || {};
-      if ($window.sessionStorage.token) {
-        config.headers.Authorization = 'Bearer ' + $window.sessionStorage.token;
+      if ($window.localStorage.token) {
+        config.headers.Authorization = 'Bearer ' + $window.localStorage.token;
       }
       return config;
     },
