@@ -47,11 +47,58 @@ app.service('addPhotoService', ['$cordovaCamera', '$http', function($cordovaCame
 
 }])
 
+app.service('addMapService', ['$cordovaGeolocation', function($cordovaGeolocation){
+  var sv = this;
+  var lat = '';
+  var long = ''
+  var posOptions = {timeout: 10000, enableHighAccuracy: false};
+
+  sv.getMap = function(){
+    console.log('running get map');
+    $cordovaGeolocation.getCurrentPosition(posOptions)
+    .then(function(position){
+     var positionNow = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+     console.log('positionNow1, ', positionNow);
+
+     var mapOptions = {
+        center: positionNow,
+        zoom: 12,
+        draggable: true,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      };
+
+      sv.map = new google.maps.Map(document.getElementById("map"), mapOptions)
+
+      var marker = new google.maps.Marker({
+        position: positionNow,
+        title: "Pinpoint your WiseUp!",
+        draggable: true,
+        animation: google.maps.Animation.DROP,
+      });
+
+    // To add the marker to the map, call setMap();
+      marker.setMap(sv.map);
+      marker.addListener('dragend', function(){
+         lat = marker.getPosition().lat();
+         long = marker.getPosition().lng()
+         sv.map.setCenter(marker.getPosition());
+
+         console.log('marker position:', marker.position);
+        console.log('lat:', lat);
+        console.log('long:',long);
+      })
+// });
+
+    }, function(err){
+      console.log('could not get location');
+    })
+  }
+}])
 
 app.service('submitService', ['$cordovaGeolocation', '$http', function($cordovaGeolocation, $http){
   var sv = this;
   var lat = '';
-  var long = ''
+  var long = '';
 
   sv.submit = function(form){
     // get user location in lt and long

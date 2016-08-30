@@ -1,8 +1,11 @@
 'use strict';
 
 /* aps is short for addPhotoSrvice */
-app.controller('SaySomethingController', ['$http', 'addPhotoService', 'submitService', '$cordovaGeolocation', function($http, aps, ss, $cordovaGeolocation){
+app.controller('SaySomethingController', ['$scope', '$http', 'addPhotoService', 'addMapService', 'submitService', '$cordovaGeolocation', function($scope, $http, aps, ams, ss, $cordovaGeolocation){
   var vm = this;
+
+  vm.showMap = ams.getMap();
+
   vm.picture = '';
   vm.showPhotoButton = true;
   vm.takePicture = function(){
@@ -14,6 +17,27 @@ app.controller('SaySomethingController', ['$http', 'addPhotoService', 'submitSer
   });
 }
   vm.submit = ss.submit;
+
+  // swiper
+  $scope.$on("$ionicSlides.sliderInitialized", function(event, data){
+  // data.slider is the instance of Swiper
+  $scope.slider = data.slider;
+});
+
+  $scope.swiper = {
+        options: {
+            pagination: '.custom-swiper-pagination',
+            paginationClickable: true,
+            loop: false,
+            direction: 'horizontal',
+            spaceBetween: 20,
+            speed: 600,
+            touchAngle: 10,
+            simulateTouch: false
+        },
+        data: {}
+  };
+
 }])
 
 app.controller('HomeController', ['$http', function($http){

@@ -1,36 +1,84 @@
-<ion-content>
-<form novalidate name="ssform">
-  <div class="list">
-    <label class="item item-input item-select">
-    <div class="input-label">City
-    <select name="ssCity" ng-model="form.city">
-      <option>Fort Collins</option>
-      <option>Boulder</option>
-      <option>Denver</option>
-    </select>
-    </div>
-    </label>
+  <!-- <ion-content scroll="false">
+  <ion-slides  options="options" slider="data.slider">
+  <form novalidate name="ssform">
+    <ion-slide-page>
+      <div class="box blue">
+          <div class="list">
+            <label class="item item-input item-select">
+            <div class="input-label">City
+              <select name="ssCity" ng-model="form.city">
+                <option>Fort Collins</option>
+                <option>Boulder</option>
+                <option>Denver</option>
+              </select>
+            </div>
+            </label>
+        </div>
+      </div>
+    </ion-slide-page>
+    <ion-slide-page>
+      <label class="item item-input item-select">
+      <div class="input-label">Category
+      <select name="ssCategory" ng-model="form.category">
+        <option>Roads</option>
+        <option>Sanitation</option>
+        <option>Public Safety</option>
+      </select>
+      </div>
+      </label>
+    </ion-slide-page>
+    <ion-slide-page>
+      <label class="item item-input">
+        <span class="input-label">Issue</span>
+        <textarea id="txtnotes" name="ssComments" ng-model="form.issue"></textarea>
+      </label>
+      <button class="button button-assertive button-block" ng-show="SS.showPhotoButton" ng-click="SS.submit(form)">Submit your saySomething!  </button>
+    </ion-slide-page>
+  </form>
+  </ion-slides>
+</ion-content> -->
 
-    <label class="item item-input item-select">
-    <div class="input-label">Category
-    <select name="ssCategory" ng-model="form.category">
-      <option>Roads</option>
-      <option>Sanitation</option>
-      <option>Public Safety</option>
-    </select>
-    </div>
-    </label>
+<ion-content scroll="false">
+  <ion-slides options="swiper.options" slider="swiper.data.slider">
+    <ion-slide-page>
+      <div class="box">
+        <label class="item item-input item-select">
+        <div class="input-label">City
+          <select name="ssCity" ng-model="form.city">
+            <option>Fort Collins</option>
+            <option>Boulder</option>
+            <option>Denver</option>
+          </select>
+        </div>
+        </label>
+      </div>
+    </ion-slide-page>
+    <ion-slide-page>
+      <div class="box">
+        <label class="item item-input item-select">
+        <div class="input-label">Category
+        <select name="ssCategory" ng-model="form.category">
+          <option>Roads</option>
+          <option>Sanitation</option>
+          <option>Public Safety</option>
+        </select>
+        </div>
+        </label>
+        <label class="item item-input">
+          <span class="input-label">Issue</span>
+          <textarea id="txtnotes" name="ssIssue" ng-model="form.issue"></textarea>
+        </label>
+      </div>
+    </ion-slide-page>
+    <ion-slide-page>
+      <div class="box map-box">
+        <button class="button button-dark button-block" ng-show="SS.showPhotoButton" ng-click="SS.takePicture()">Add a photo</button>
+        <ion-toggle ng-model="ss.currLocation" toggle-class="toggle-energized">Use current location?</ion-toggle>
+        <div id="map" data-tap-disabled="true">
 
-    <label class="item item-input">
-      <span class="input-label">Issue</span>
-      <textarea id="txtnotes" name="ssComments" ng-model="form.issue"></textarea>
-    </label>
-
-<!--
-    <button class="button button-dark button-block" ng-show="SS.showPhotoButton" ng-click="SS.takePicture()">Take a photo</button> -->
-    <button class="button button-assertive button-block" ng-show="SS.showPhotoButton" ng-click="SS.submit(form)">Submit your saySomething!  </button>
-
-
-  </div>
-</form>
+        </div>
+      </div>
+    </ion-slide-page>
+  </ion-slides>
+<div class="custom-swiper-pagination swiper-pagination"></div>
 </ion-content>

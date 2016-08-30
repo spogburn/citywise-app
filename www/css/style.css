@@ -24,3 +24,27 @@ h3 {
 .question {
   margin-bottom: 20px;
 }
+
+.scroll {
+    height: 100%;
+}
+
+#map {
+    margin-top: 8%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+    width: 80vw;
+    height: 60vh;
+    max-width: none;
+}
+
+.custom-swiper-pagination {
+  bottom: 5px;
+  left: 0;
+  width:100%;
+}
+
+.custom-swiper-pagination .swiper-pagination-bullet {
+  margin: 0 5px;
+}
