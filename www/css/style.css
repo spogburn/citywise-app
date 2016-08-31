@@ -4,25 +4,71 @@
 /* login screen background image */
 .background.scroll-content {
     background: url("../img/pexels-photo-68257.jpg") no-repeat;
-    background-color: rgb(184, 147, 12);
+    background-color: rgb(153, 122, 8);
     background-blend-mode: multiply;
     background-size: cover;
 }
 
 .yellow-pane {
-  background: rgba(255, 255, 255, 0.5);
+  background: none;
 }
 
-.title {
-  color: black;
-}
+/*.title {
+  color: white;
+}*/
 
-h3 {
+.intro {
   margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.bar-light {
+  background: none;
+}
+
+.swiper-slide img {
+  max-height: none !important;
+}
+
+#logo-header {
+  margin-bottom: 0;
+  margin-top: 5px;
+  text-align: left;
+}
+
+.logo-button {
+  padding-right: 0 !important;
+}
+
+h2 {
+  display: inline-block;
+  color: white;
+  margin-top: 0;
+  text-shadow: 2px 2px 2px rgba(0, 0, 0, .9);
+  background-color: rgba(0, 0, 0, .7);
+}
+
+h4 {
+  display: inline-block;
+  color: white;
+  text-shadow: 2px 2px 2px rgba(0, 0, 0, .9);
+  /*background-color: rgba(0, 0, 0, .7);*/
+}
+
+.swiper-pagination-bullet {
+  color: white;
+}
+#google {
+  color: black;
+  text-shadow: none;
 }
 
 .question {
   margin-bottom: 20px;
+}
+
+#last-question {
+  margin-bottom: 10px;
 }
 
 .scroll {
@@ -47,4 +93,11 @@ h3 {
 
 .custom-swiper-pagination .swiper-pagination-bullet {
   margin: 0 5px;
+  background: #ffc900;
+}
+
+.custom-swiper-pagination .swiper-pagination-bullet-active {
+  margin: 0 5px;
+  background: #ffc900;
+  opacity: 1;
 }

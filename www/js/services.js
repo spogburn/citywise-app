@@ -62,12 +62,27 @@ app.service('addMapService', ['$cordovaGeolocation', function($cordovaGeolocatio
 
      var mapOptions = {
         center: positionNow,
-        zoom: 12,
+        zoom: 15,
         draggable: true,
         mapTypeId: google.maps.MapTypeId.ROADMAP
       };
 
       sv.map = new google.maps.Map(document.getElementById("map"), mapOptions)
+
+
+      var mapDiv = document.getElementById("map")
+
+      var sliderBox = document.querySelector('.map-box').parentElement;
+
+      mapDiv.addEventListener('mousedown', function(e){
+        e.stopPropagation();
+        sliderBox.classList.add('swiper-no-swiping')
+      })
+
+      sliderBox.addEventListener('mouseover', function(e){
+        console.log(e);
+        sliderBox.classList.remove('swiper-no-swiping')
+      })
 
       var marker = new google.maps.Marker({
         position: positionNow,
@@ -78,6 +93,10 @@ app.service('addMapService', ['$cordovaGeolocation', function($cordovaGeolocatio
 
     // To add the marker to the map, call setMap();
       marker.setMap(sv.map);
+
+
+
+
       marker.addListener('dragend', function(){
          lat = marker.getPosition().lat();
          long = marker.getPosition().lng()

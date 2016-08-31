@@ -33,7 +33,9 @@ app.controller('SaySomethingController', ['$scope', '$http', 'addPhotoService', 
             spaceBetween: 20,
             speed: 600,
             touchAngle: 10,
-            simulateTouch: false
+            simulateTouch: false,
+            noSwiping: true,
+            centeredSlides: true
         },
         data: {}
   };
