@@ -57,6 +57,7 @@ app.service('addMapService', ['$cordovaGeolocation', function($cordovaGeolocatio
     console.log('running get map');
     $cordovaGeolocation.getCurrentPosition(posOptions)
     .then(function(position){
+      console.log('position: ', position.coords.latitude + " : " + position.coords.longitude);
      var positionNow = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
      console.log('positionNow1, ', positionNow);
 
@@ -69,17 +70,16 @@ app.service('addMapService', ['$cordovaGeolocation', function($cordovaGeolocatio
 
       sv.map = new google.maps.Map(document.getElementById("map"), mapOptions)
 
-
       var mapDiv = document.getElementById("map")
 
       var sliderBox = document.querySelector('.map-box').parentElement;
 
       mapDiv.addEventListener('mousedown', function(e){
-        e.stopPropagation();
+        console.log(e);
         sliderBox.classList.add('swiper-no-swiping')
       })
 
-      sliderBox.addEventListener('mouseover', function(e){
+      mapDiv.addEventListener('mouseup', function(e){
         console.log(e);
         sliderBox.classList.remove('swiper-no-swiping')
       })
@@ -94,9 +94,6 @@ app.service('addMapService', ['$cordovaGeolocation', function($cordovaGeolocatio
     // To add the marker to the map, call setMap();
       marker.setMap(sv.map);
 
-
-
-
       marker.addListener('dragend', function(){
          lat = marker.getPosition().lat();
          long = marker.getPosition().lng()
@@ -106,7 +103,6 @@ app.service('addMapService', ['$cordovaGeolocation', function($cordovaGeolocatio
         console.log('lat:', lat);
         console.log('long:',long);
       })
-// });
 
     }, function(err){
       console.log('could not get location');

@@ -13,6 +13,9 @@
   background: none;
 }
 
+.logo-image{
+  margin-top: 5px;
+}
 /*.title {
   color: white;
 }*/
@@ -36,9 +39,6 @@
   text-align: left;
 }
 
-.logo-button {
-  padding-right: 0 !important;
-}
 
 h2 {
   display: inline-block;
@@ -76,12 +76,10 @@ h4 {
 }
 
 #map {
-    margin-top: 8%;
     margin-left: auto;
     margin-right: auto;
-    margin-bottom: 20px;
-    width: 80vw;
-    height: 60vh;
+    width: 70vw;
+    height: 55vh;
     max-width: none;
 }
 
@@ -98,6 +96,4 @@ h4 {
 
 .custom-swiper-pagination .swiper-pagination-bullet-active {
   margin: 0 5px;
-  background: #ffc900;
-  opacity: 1;
 }

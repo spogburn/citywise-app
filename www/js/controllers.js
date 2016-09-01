@@ -60,7 +60,8 @@ app.controller('LoginController', ['$state', '$http', '$cordovaOauth', '$window'
       console.log('jwt:', jwt);
       $window.localStorage.token = jwt.data.token;
       $window.localStorage.email = jwt.data.profile.email;
-      $state.go('tabs.home')
+      console.log('about to redirect');
+      $state.go('tabs.say-something')
       }), function(error) {
           console.log('error:', error);
       };

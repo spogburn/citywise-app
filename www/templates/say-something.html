@@ -1,7 +1,12 @@
-<ion-content scroll="false" class="background padding">
+<ion-header-bar align-title="center" class="bar-energized">
+    <div class="title">
+      <img class="logo-image" src="img/city_wise_logo.svg" height="35px"/>
+    </div>
+</ion-header-bar>
+<ion-content overflow-scroll="true" class="background padding has-header">
   <ion-slides options="swiper.options" slider="swiper.data.slider">
     <ion-slide-page>
-      <div class="box">
+      <div class="box padding">
         <div class="list">
           <label class="item item-input item-select">
           <div class="input-label">City
@@ -33,13 +38,18 @@
       </div>
     </ion-slide-page>
     <ion-slide-page>
-      <div class="box map-box">
-        <button class="button button-dark button-block" ng-show="SS.showPhotoButton" ng-click="SS.takePicture()">Add a photo</button>
-        <ion-toggle ng-model="ss.currLocation" toggle-class="toggle-energized">Use current location?</ion-toggle>
-        <div id="map" data-tap-disabled="true">
+      <ion-scroll zooming="true" direction="y" style="height: 80vh;">
+        <div class="box map-box padding" style="height:500px;">
 
+          <button class="button button-dark button-block" ng-show="SS.showPhotoButton" ng-click="SS.takePicture()">Add a photo</button>
+          <div>
+            <h4 form-label>Add a location</h4>
+          </div>
+          <div id="map" data-tap-disabled="true">
+
+          </div>
         </div>
-      </div>
+      </ion-scroll>
     </ion-slide-page>
   </ion-slides>
 <div class="custom-swiper-pagination swiper-pagination"></div>
