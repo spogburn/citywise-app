@@ -38,11 +38,11 @@ app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider){
     abstract: true,
     templateUrl: 'templates/tabs.html'
   })
-  .state('tabs.say-something', {
-    url: '/say-something',
+  .state('tabs.city-wise', {
+    url: '/city-wise',
     views: {
-      'say-something': {
-        templateUrl: 'templates/say-something.html',
+      'city-wise': {
+        templateUrl: 'templates/city-wise.html',
         controller: 'SaySomethingController as SS'
       }
     }
@@ -58,7 +58,6 @@ app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider){
   })
   $urlRouterProvider.otherwise('/login')
 })
-
 
 app.factory('authInterceptor', ['$q', '$window', function ($q, $window) {
   return {
