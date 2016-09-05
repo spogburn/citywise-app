@@ -23,6 +23,10 @@ app.run(function($ionicPlatform) {
   });
 })
 
+app.constant("config", {
+        "apiUrl": "https://city-wise.herokuapp.com/",
+    })
+
 app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider){
   $ionicConfigProvider
   .tabs.position('bottom')
@@ -42,16 +46,24 @@ app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider){
     url: '/city-wise',
     views: {
       'city-wise': {
-        templateUrl: 'templates/city-wise.html',
-        controller: 'SaySomethingController as SS'
+        templateUrl: './templates/city-wise.html',
+        controller: 'CityWiseController as CWC'
       }
     }
   })
+  // .state('tabs.city-wise.photo'), {
+  //   url: '/city-wise/photo',
+  //   views: {
+  //     'photo': {
+  //       templateUrl: '.templates/photo.html'
+  //     }
+  //   }
+  // }
   .state('tabs.home', {
     url: '/home',
     views: {
       'home': {
-        templateUrl: 'templates/home.html',
+        templateUrl: './templates/home.html',
         controller: 'HomeController as HC'
       }
     }

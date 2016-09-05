@@ -5996,7 +5996,7 @@ button.item.item-complex {
   z-index: 2;
   padding: 16px 49px 16px 16px;
   border: none;
-  background-color: #fff; }
+  background-color: #000; }
 
 a.item-content {
   display: block;
@@ -7760,13 +7760,13 @@ input[type="color"] {
   width: 100%; }
 
 textarea {
-  padding-left: 0; }
+  padding-left: 5; }
   textarea::-moz-placeholder {
-    color: #aaaaaa; }
+    color: #a2a2a2; }
   textarea:-ms-input-placeholder {
-    color: #aaaaaa; }
+    color: #a2a2a2; }
   textarea::-webkit-input-placeholder {
-    color: #aaaaaa;
+    color: #a2a2a2;
     text-indent: -3px; }
 
 textarea {
@@ -7815,15 +7815,15 @@ input[type="file"] {
 
 input::-moz-placeholder,
 textarea::-moz-placeholder {
-  color: #aaaaaa; }
+  color: #a2a2a2; }
 
 input:-ms-input-placeholder,
 textarea:-ms-input-placeholder {
-  color: #aaaaaa; }
+  color: #a2a2a2; }
 
 input::-webkit-input-placeholder,
 textarea::-webkit-input-placeholder {
-  color: #aaaaaa;
+  color: #a2a2a2;
   text-indent: 0; }
 
 input[disabled],

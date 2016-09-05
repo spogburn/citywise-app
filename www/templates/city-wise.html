@@ -3,55 +3,51 @@
       <img class="logo-image" src="img/city_wise_logo.svg" height="35px"/>
     </div>
 </ion-header-bar>
-<ion-content overflow-scroll="true" class="background padding has-header">
-  <ion-slides options="swiper.options" slider="swiper.data.slider">
-    <ion-slide-page>
-      <div class="box padding">
-        <div class="list">
-          <label class="item item-input item-select">
-          <div class="input-label">City
-            <select name="ssCity" ng-model="form.city">
-              <option selected>Fort Collins</option>
-              <option>Boulder</option>
-              <option>Denver</option>
-            </select>
-          </div>
-          </label>
-        </div>
-        <div class="list">
-          <label class="item item-input item-select">
-          <div class="input-label">Category
-          <select name="ssCategory" ng-model="form.category">
-            <option selected>Roads</option>
-            <option>Parks &amp; Rec</option>
-            <option>Public Transit</option>
-            <option>Utilities</option>
+<ion-content overflow-scroll="true" class="background-bw padding has-header">
+  <ion-scroll zooming="true" direction="y" style="height: 80vh;">
+    <form novalidate>
+      <div class="form-padding list">
+        <h3>Select city</h3>
+        <label for="" class="item item-input item-select item-dark">
+          <div class = "input-label">
+            City
+           </div>
+          <select ng-model="CWC.cityname">
+            <option value="1" selected>Fort Collins</option>
+            <option value="2">Boulder</option>
+            <option value="3">Denver</option>
+            <option value="4">Pueblo</option>
           </select>
-          </div>
-          </label>
+        </label>
         </div>
-        <div class="list">
+        <div class="list form-padding">
+          <h3>Choose issue type</h3>
+          <ion-list>
+            <ion-radio ng-model="CWC.issue.type" value="roads" >Roads</ion-radio>
+            <ion-radio ng-model="CWC.issue.type" value="parks">Parks &amp; Rec</ion-radio>
+            <ion-radio ng-model="CWC.issue.type" value="transit">Public Transit</ion-radio>
+            <ion-radio ng-model="CWC.issue.type" value="utilities">Utilities</ion-radio>
+          </ion-list>
+        </div>
+        <div class="list form-padding">
+          <h3>Take a photo of the issue</h3>
+          <div class="list" ng-hide="CWC.hideSuccess"><strong><h4>Photo saved!</h4></strong></div>
+          <button class="button button-dark" ng-hide="CWC.hideSuccess" ng-click="CWC.takePicture()">Add a different photo</button>
+          <button class="button button-dark" style="color:#fff;" ng-show="CWC.hideSuccess" ng-click="CWC.takePicture()">Add a photo</button>
+        </div>
+        <div class="list map-box padding form-padding">
+            <h3 form-label>Pinpoint the issue on a map</h3>
+            <div id="map" data-tap-disabled="true">
+            </div>
+        </div>
+        <div class="list form-padding">
+          <h3>Add a brief description.</h3>
           <label class="item item-input">
-            <textarea id="txtnotes" name="ssIssue" rows="10" placeholder="Issue" ng-model="form.issue"></textarea>
+            <textarea id="txtnotes" name="CWCIssue" rows="3" placeholder="Example Text: Tree is hiding stop sign on Remington and Stuart." ng-model="CWC.issue.txt"></textarea>
           </label>
         </div>
-      </div>
-    </ion-slide-page>
-    <ion-slide-page>
-      <ion-scroll zooming="true" direction="y" style="height: 80vh;">
-        <div class="box map-box padding" style="height:500px;">
-
-          <button class="button button-dark button-block" ng-show="SS.showPhotoButton" ng-click="SS.takePicture()">Add a photo</button>
-          <div ng-hide="SS.showPhotoButton"><h4>Didn't like that photo? Feel free to try again.</h4></div>
-          <div>
-            <h4 form-label>Add a location</h4>
-          </div>
-          <div id="map" data-tap-disabled="true">
-
-          </div>
-        </div>
-      </ion-scroll>
-    </ion-slide-page>
-  </ion-slides>
-<div class="custom-swiper-pagination swiper-pagination"></div>
+        {{CWC.issue}}
+          <button class="button button-energized button-block" style="color:#000; margin-top: 15px;" ng-click="CWC.submitWiseUp(CWC.issue)">Submit WiseUp!</button>
+        </form>
+    </ion-scroll>
 </ion-content>
