@@ -19,6 +19,10 @@ body {
     background-size: cover;
 }
 
+.scroll {
+    height: 100vh;
+}
+
 
 .yellow-pane {
   background: none;
@@ -47,9 +51,9 @@ body {
   background: none;
 }
 
-.swiper-slide img {
+/*.swiper-slide img {
   max-height: none !important;
-}
+}*/
 
 #loading {
   margin-top: 30%;
@@ -106,9 +110,6 @@ h4 {
   margin-bottom: 10px;
 }
 
-.scroll {
-    height: 100%;
-}
 
 #map {
     margin-left: auto;
@@ -120,7 +121,7 @@ h4 {
 
 #txtnotes {
  background: #444;
- color: #000;
+ color: #fff;
  padding: 5px;
 }
 

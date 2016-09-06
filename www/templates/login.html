@@ -4,9 +4,9 @@
         <img class="logo-image" src="img/city_wise_logo.svg" height="35px"/>
       </div>
   </ion-header-bar>
-    <ion-content class="padding background">
-      <ion-scroll zooming="true" direction="y" style="height: 80vh;">
-        <ion-pane class="pane yellow-pane padding" style="height:500px;">
+    <ion-content class="padding background" overflow-scroll="false">
+      <!-- <ion-scroll zooming="true" direction="y" style="height: 600px;"> -->
+        <ion-pane class="pane yellow-pane padding">
           <ul>
             <li class=
             "question"><h4 class="login"><strong>Busted street sign?</strong></h4><br>
@@ -23,6 +23,6 @@
           <p>Ready?</p> -->
           <button class="button button-block button-energized" ng-click="LC.googleLogin()"><h4 id="google">Login with Google</h4></button>
         </ion-pane>
-      </ion-scroll>
+      <!-- </ion-scroll> -->
     </ion-content>
 </ion-view>

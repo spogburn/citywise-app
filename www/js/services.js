@@ -2,6 +2,7 @@ app.service('addPhotoService', ['$cordovaCamera', '$http', function($cordovaCame
 
   var sv = this;
   sv.url = '' ;
+  sv.hideSuccess = true;
 
   //this method will open the camera app. It returns a promise with the data being the base64 encoded image
   sv.takePicture = function() {
@@ -26,8 +27,10 @@ app.service('addPhotoService', ['$cordovaCamera', '$http', function($cordovaCame
         upload_preset: 'zt4pq0pu'
       })
       .then(function(data) {
-        console.log(data);
         return data.data.secure_url;
+      })
+      .catch(function(err){
+        console.log('error', err);
       });
   };
 
@@ -100,7 +103,9 @@ app.service('addMapService', ['$cordovaGeolocation', function($cordovaGeolocatio
             if (results[0]){
               console.log(results[0]);
               var results = results[0].formatted_address;
+              // this gets the name of the city although i am not currently using this
               sv.cityName = results.split(', ')[1];
+              // this gets the state two letter abbr ditto not using
               sv.stateAbbr = results.split(', ')[2].substring(0,2);
               console.log(sv.cityName);
               console.log(sv.stateAbbr);
@@ -129,24 +134,31 @@ app.service('submitService', ['$http', '$window','addMapService', 'addPhotoServi
     console.log('issue, ', issue);
     console.log('lat: ', ams.lat);
     console.log('long', ams.long);
-    console.log('cityName', ams.cityName);
+    console.log('cityName', issue.cityname);
     console.log('photodata', aps.url);
-    if (ams.cityName === "Fort Collins" || "Fort Collins Loveland"){
+
+    if (issue.cityname === "Fort Collins"){
       city_id = 1;
+    } else if (issue.cityname === "Denver"){
+      city_id = 2;
+    } else if (issue.cityname === "Boulder"){
+    city_id = 3;
+    } else if (issue.cityname === "Colorado Springs"){
+      city_id = 4;
     }
 
     var cityWiseSubmit = {
-      city: ams.cityName,
-      city_id:city_id,
+      city: issue.cityname,
+      city_id: city_id,
       category: issue.type,
       issue: issue.txt,
       photo_url: aps.url,
-      email: $window.localStorage.email,
+      user_email: $window.localStorage.email,
       lat: ams.lat,
       long: ams.long
     }
 
-    $http.post('http://localhost:3000/api/city-wise', cityWiseSubmit)
+    $http.post('https://city-wise.herokuapp.com/api/city-wise', cityWiseSubmit)
     .then(function(response){
       console.log('response!', response);
     })

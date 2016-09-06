@@ -4,6 +4,8 @@
 app.controller('CityWiseController', ['$scope', '$http', 'addPhotoService', 'addMapService', 'submitService', '$cordovaGeolocation', function($scope, $http, aps, ams, ss, $cordovaGeolocation){
   var vm = this;
   vm.showMap = ams.getMap();
+
+  // state to toggle photo button
   vm.hideSuccess = true;
   // empty object to hold form data
   vm.issue = {};
@@ -11,13 +13,10 @@ app.controller('CityWiseController', ['$scope', '$http', 'addPhotoService', 'add
   vm.photoData = '';
 
   vm.takePicture = function(){
-    // document.querySelector('.view-container').style.display='none';
     aps.takeAndSend()
-    // .then(function(image){
-    //   document.querySelector('.view-container').style.display= '';
-    //   vm.issue.photoData = 'data:image/jpeg;base64,' + image;
-    //   vm.hideSuccess = false;
-    // });
+    .then(function(){
+      vm.hideSuccess = false;
+    })
   }
 
   vm.submitWiseUp = function(){

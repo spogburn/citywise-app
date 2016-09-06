@@ -4,7 +4,7 @@
     </div>
 </ion-header-bar>
 <ion-content overflow-scroll="true" class="background-bw padding has-header">
-  <ion-scroll zooming="true" direction="y" style="height: 80vh;">
+  <!-- <ion-scroll zooming="true" direction="y" style="height: 600px;"> -->
     <form novalidate>
       <div class="form-padding list">
         <h3>Select city</h3>
@@ -12,11 +12,11 @@
           <div class = "input-label">
             City
            </div>
-          <select ng-model="CWC.cityname">
-            <option value="1" selected>Fort Collins</option>
-            <option value="2">Boulder</option>
-            <option value="3">Denver</option>
-            <option value="4">Pueblo</option>
+          <select ng-model="CWC.issue.cityname">
+            <option value="Fort Collins" selected>Fort Collins</option>
+            <option value="Boulder">Boulder</option>
+            <option value="Denver">Denver</option>
+            <option value="Colorado Springs">Colorado Springs</option>
           </select>
         </label>
         </div>
@@ -43,11 +43,10 @@
         <div class="list form-padding">
           <h3>Add a brief description.</h3>
           <label class="item item-input">
-            <textarea id="txtnotes" name="CWCIssue" rows="3" placeholder="Example Text: Tree is hiding stop sign on Remington and Stuart." ng-model="CWC.issue.txt"></textarea>
+            <textarea id="txtnotes" name="CWCIssue" rows="3" placeholder="e.g: Tree is hiding stop sign on Remington and Stuart."  onfocus="this.placeholder = ''" onblur="this.placeholder = 'e.g: Tree is hiding stop sign on Remington and Stuart.'"  ng-model="CWC.issue.txt"></textarea>
           </label>
         </div>
-        {{CWC.issue}}
           <button class="button button-energized button-block" style="color:#000; margin-top: 15px;" ng-click="CWC.submitWiseUp(CWC.issue)">Submit WiseUp!</button>
         </form>
-    </ion-scroll>
+    <!-- </ion-scroll> -->
 </ion-content>

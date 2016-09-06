@@ -29,7 +29,8 @@ app.constant("config", {
 
 app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider){
   $ionicConfigProvider
-  .tabs.position('bottom')
+  // .tabs.position('bottom')
+  .spinner.icon('spiral')
 
   $stateProvider
   .state('login', {
