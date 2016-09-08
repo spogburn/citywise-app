@@ -1,0 +1,16 @@
+  <ion-modal-view>
+    <ion-header-bar class="bar bar-header bar-energized">
+          <h1 class="title">Describe the issue</h1>
+          <button class="button button-clear button-primary" ng-click="modal.hide()">Cancel</button>
+        </ion-header-bar>
+    <ion-content class="padding">
+      <div class="list">
+           <label class="item item-input">
+             <textarea id="txtnotes" name="CWCIssue" rows="5" placeholder="e.g: Tree is hiding stop sign on Remington and Stuart."  onfocus="this.placeholder = ''" onblur="this.placeholder = 'e.g: Tree is hiding stop sign on Remington and Stuart.'"  ng-model="CWC.issue.txt">
+             </textarea>
+           </label>
+
+       <button class="button button-bar button-dark button-outline" ng-click="modal.hide()">Add Description</button>
+      </div>
+    </ion-content>
+  </ion-modal-view>

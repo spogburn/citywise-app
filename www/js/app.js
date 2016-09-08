@@ -3,7 +3,7 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-var app = angular.module('saySomething', ['ionic', 'ngCordova', 'ngCordovaOauth'])
+var app = angular.module('CityWise', ['ionic', 'ngCordova', 'ngCordovaOauth'])
 
 app.run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -29,7 +29,6 @@ app.constant("config", {
 
 app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider){
   $ionicConfigProvider
-  // .tabs.position('bottom')
   .spinner.icon('spiral')
 
   $stateProvider
@@ -38,20 +37,21 @@ app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider){
     templateUrl: 'templates/login.html',
     controller: 'LoginController as LC'
   })
-  .state('tabs', {
-    url: '/tab',
-    abstract: true,
-    templateUrl: 'templates/tabs.html'
-  })
-  .state('tabs.city-wise', {
+  .state('city-wise', {
     url: '/city-wise',
-    views: {
-      'city-wise': {
-        templateUrl: './templates/city-wise.html',
-        controller: 'CityWiseController as CWC'
-      }
-    }
+    templateUrl: './templates/city-wise.html',
+    controller: 'CityWiseController as CWC'
   })
+  .state('city-wise2', {
+    url: '/city-wise2',
+    templateUrl: './templates/city-wise2.html',
+    controller: 'CityWiseController as CWC'
+  })
+  .state('city-wise3', {
+      url: '/city-wise3',
+      templateUrl: './templates/city-wise3.html',
+      controller: 'CityWiseController as CWC'
+    })
   // .state('tabs.city-wise.photo'), {
   //   url: '/city-wise/photo',
   //   views: {

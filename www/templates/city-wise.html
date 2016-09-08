@@ -3,50 +3,22 @@
       <img class="logo-image" src="img/city_wise_logo.svg" height="35px"/>
     </div>
 </ion-header-bar>
-<ion-content overflow-scroll="true" class="background-bw padding has-header">
-  <!-- <ion-scroll zooming="true" direction="y" style="height: 600px;"> -->
-    <form novalidate>
-      <div class="form-padding list">
-        <h3>Select city</h3>
-        <label for="" class="item item-input item-select item-dark">
-          <div class = "input-label">
-            City
-           </div>
-          <select ng-model="CWC.issue.cityname">
-            <option value="Fort Collins" selected>Fort Collins</option>
-            <option value="Boulder">Boulder</option>
-            <option value="Denver">Denver</option>
-            <option value="Colorado Springs">Colorado Springs</option>
-          </select>
-        </label>
+<ion-content class="citywise-form has-header" scroll="false">
+      <div class="list form-list">
+        <div class="padding">
+          <h4 style="color:#777;">Thanks for helping make your city better! Let's start by choosing the type of issue you're reporting.</h4>
+          <h3>What category best describes your issue?</h3>
         </div>
-        <div class="list form-padding">
-          <h3>Choose issue type</h3>
-          <ion-list>
-            <ion-radio ng-model="CWC.issue.type" value="roads" >Roads</ion-radio>
-            <ion-radio ng-model="CWC.issue.type" value="parks">Parks &amp; Rec</ion-radio>
-            <ion-radio ng-model="CWC.issue.type" value="transit">Public Transit</ion-radio>
-            <ion-radio ng-model="CWC.issue.type" value="utilities">Utilities</ion-radio>
-          </ion-list>
+        <ion-list>
+          <ion-radio ng-model="CWC.issue.type" value="roads" class="item item-light">Roads</ion-radio>
+          <ion-radio ng-model="CWC.issue.type" value="parks" class="item item-light">Parks &amp; Rec</ion-radio>
+          <ion-radio ng-model="CWC.issue.type" value="transit" class="item item-light">Public Transit</ion-radio>
+          <ion-radio ng-model="CWC.issue.type" value="utilities" class="item item-light">Utilities</ion-radio>
+        </ion-list>
+      </div>
+      <div class="row padding">
+        <div class="col text-right">
+        <a href="#/city-wise2"> <button class="button button-dark button-outline button-border">Next</button></a>
         </div>
-        <div class="list form-padding">
-          <h3>Take a photo of the issue</h3>
-          <div class="list" ng-hide="CWC.hideSuccess"><strong><h4>Photo saved!</h4></strong></div>
-          <button class="button button-dark" ng-hide="CWC.hideSuccess" ng-click="CWC.takePicture()">Add a different photo</button>
-          <button class="button button-dark" style="color:#fff;" ng-show="CWC.hideSuccess" ng-click="CWC.takePicture()">Add a photo</button>
-        </div>
-        <div class="list map-box padding form-padding">
-            <h3 form-label>Pinpoint the issue on a map</h3>
-            <div id="map" data-tap-disabled="true">
-            </div>
-        </div>
-        <div class="list form-padding">
-          <h3>Add a brief description.</h3>
-          <label class="item item-input">
-            <textarea id="txtnotes" name="CWCIssue" rows="3" placeholder="e.g: Tree is hiding stop sign on Remington and Stuart."  onfocus="this.placeholder = ''" onblur="this.placeholder = 'e.g: Tree is hiding stop sign on Remington and Stuart.'"  ng-model="CWC.issue.txt"></textarea>
-          </label>
-        </div>
-          <button class="button button-energized button-block" style="color:#000; margin-top: 15px;" ng-click="CWC.submitWiseUp(CWC.issue)">Submit WiseUp!</button>
-        </form>
-    <!-- </ion-scroll> -->
+      </div>
 </ion-content>

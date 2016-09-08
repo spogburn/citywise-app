@@ -2,7 +2,8 @@ app.service('addPhotoService', ['$cordovaCamera', '$http', function($cordovaCame
 
   var sv = this;
   sv.url = '' ;
-  sv.hideSuccess = true;
+  sv.photoData = '';
+  sv.photoTaken = {};
 
   //this method will open the camera app. It returns a promise with the data being the base64 encoded image
   sv.takePicture = function() {
@@ -17,7 +18,8 @@ app.service('addPhotoService', ['$cordovaCamera', '$http', function($cordovaCame
     };
     return $cordovaCamera.getPicture(options)
     .then(function(pictureData){
-    return 'data:image/jpeg;base64,' + pictureData;
+      sv.photoTaken.done = true;
+     return 'data:image/jpeg;base64,' + pictureData;
   });
 }
   //this method uploads the image passed into it as base64 and returns a promise where the data is an object of information about the image. the url can be accessed at data.data.secure_url
@@ -33,26 +35,26 @@ app.service('addPhotoService', ['$cordovaCamera', '$http', function($cordovaCame
         console.log('error', err);
       });
   };
-
-  sv.takeAndSend = function() {
-     sv.takePicture()
-       .then(function(image) {
-         return sv.uploadPicture(image);
-       })
-       .then(function(_url) {
-        sv.url = _url;
-        console.log('url:', sv.url);
-      })
-       .catch(function(err) {
-         console.log('error', err);
-       });
-   };
+  //
+  // sv.takeAndSend = function() {
+  //    sv.takePicture()
+  //      .then(function(image) {
+  //        return sv.uploadPicture(image);
+  //      })
+  //      .then(function(_url) {
+  //       sv.url = _url;
+  //       console.log('url:', sv.url);
+  //     })
+  //      .catch(function(err) {
+  //        console.log('error', err);
+  //      });
+  //  };
 
 }])
 
 app.service('addMapService', ['$cordovaGeolocation', function($cordovaGeolocation){
   var sv = this;
-  var posOptions = {timeout: 10000, enableHighAccuracy: false};
+  var posOptions = {timeout: 20000, enableHighAccuracy: false};
 
   sv.getMap = function(){
     console.log('running get map');
@@ -61,7 +63,7 @@ app.service('addMapService', ['$cordovaGeolocation', function($cordovaGeolocatio
      sv.lat = position.coords.latitude;
      sv.long = position.coords.longitude
      var positionNow = new google.maps.LatLng(sv.lat, sv.long);
-
+     reverseGeocode();
      var mapOptions = {
         center: positionNow,
         zoom: 15,
@@ -84,11 +86,9 @@ app.service('addMapService', ['$cordovaGeolocation', function($cordovaGeolocatio
 
     // listens for the lat/long of the marker
       marker.addListener('dragend', function(){
-         sv.lat = marker.getPosition().lat();
-         sv.long = marker.getPosition().lng();
-         sv.map.setCenter(marker.getPosition());
-
-        console.log('marker position:', marker.position);
+        sv.lat = marker.getPosition().lat();
+        sv.long = marker.getPosition().lng();
+        sv.map.setCenter(marker.getPosition());
         console.log('lat:', sv.lat);
         console.log('long:', sv.long);
         reverseGeocode();
@@ -129,42 +129,43 @@ app.service('submitService', ['$http', '$window','addMapService', 'addPhotoServi
   var sv = this;
   var lat = '';
   var long = '';
-  var city_id;
+  var url = '';
+
   sv.submit = function(issue){
+    aps.photoTaken.done = false;
+    aps.uploadPicture(issue.photoData)
+    .then(function(data){
+      url = data;
+    })
+    .catch(function(err){
+      console.log(err);
+    });
+
     console.log('issue, ', issue);
     console.log('lat: ', ams.lat);
     console.log('long', ams.long);
-    console.log('cityName', issue.cityname);
-    console.log('photodata', aps.url);
-
-    if (issue.cityname === "Fort Collins"){
-      city_id = 1;
-    } else if (issue.cityname === "Denver"){
-      city_id = 2;
-    } else if (issue.cityname === "Boulder"){
-    city_id = 3;
-    } else if (issue.cityname === "Colorado Springs"){
-      city_id = 4;
-    }
+    console.log('cityname', ams.cityName);
+    console.log('state abbr', ams.stateAbbr);
+    console.log('photodata', url);
 
     var cityWiseSubmit = {
-      city: issue.cityname,
-      city_id: city_id,
+      city: ams.cityName,
+      state: ams.stateAbbr,
       category: issue.type,
       issue: issue.txt,
-      photo_url: aps.url,
+      photo_url: url,
       user_email: $window.localStorage.email,
       lat: ams.lat,
       long: ams.long
     }
 
-    $http.post('https://city-wise.herokuapp.com/api/city-wise', cityWiseSubmit)
-    .then(function(response){
-      console.log('response!', response);
-    })
-    .catch(function(err){
-      console.log('err', err);
-    })
+    // $http.post('https://city-wise.herokuapp.com/api/city-wise', cityWiseSubmit)
+    // .then(function(response){
+    //   console.log('response!', response);
+    // })
+    // .catch(function(err){
+    //   console.log('err', err);
+    // })
 
   }
 

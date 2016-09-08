@@ -1,29 +1,57 @@
 /* Empty. Add your own CSS if you like */
 body {
   color: #fff;
+  font-family: "Open Sans", sans-serif;
 }
 
 /* login screen background image */
-.background.scroll-content {
-    background: url("../img/pexels-photo-68257.jpg") no-repeat;
+.background {
+    background: url("../img/pexels-photo-68257.jpg") no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        background-size: cover;
     background-color: rgb(153, 122, 8);
     background-blend-mode: multiply;
     background-size: cover;
 }
 
 /* login screen background image */
-.background-bw.scroll-content {
-    background: url("../img/pexels-photo-68257.jpg") no-repeat;
+.background-bw {
+    background: url("../img/pexels-photo-68257.jpg") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
     background-color: rgba(191, 191, 191, 0.7);
     background-blend-mode: lighten;
     background-size: cover;
 }
 
+.citywise-form {
+  background-color:#ffffff;
+}
+
+.button-left {
+  float:left;
+}
+
+.button-right{
+  float:right;
+}
+
+.form-nav-buttons{
+  padding-left: 10px;
+  padding-right: 10px;
+}
 .scroll {
     height: 100vh;
 }
 
-
+.category{
+  margin-top: 10%;
+}
+.photo-button{
+  margin-top: 10%;
+}
 .yellow-pane {
   background: none;
   margin-left: auto;
@@ -33,12 +61,17 @@ body {
 .logo-image{
   margin-top: 5px;
 }
+
 /*.title {
   color: white;
 }*/
+.form-list {
+  margin-bottom: 5px;
+}
 
-.form-padding{
-  padding: 5% 10%;
+a {
+  text-decoration: none;
+  color: white;
 }
 
 .intro {
@@ -65,8 +98,10 @@ body {
   text-align: left;
 }
 
-
-h2 {
+h3{
+  margin-top: 10px;
+}
+h2.login-answer {
   display: inline-block;
   color: white;
   margin-top: 0;
@@ -74,7 +109,7 @@ h2 {
   background-color: rgba(0, 0, 0, .7);
 }
 
-h4 {
+h4.login {
   display: inline-block;
   color: white;
   text-shadow: 2px 2px 2px rgba(0, 0, 0, .9);
@@ -84,6 +119,7 @@ h4 {
 
 #action {
   font-size: 1.4em;
+  color:white;
   margin-left: 6%;
   margin-right: 6%;
 }
@@ -92,9 +128,7 @@ h4 {
   background: #ffc900;
 
 }
-.swiper-pagination-bullet {
-  color: white;
-}
+
 #google {
   color: black;
   text-shadow: none;
@@ -112,63 +146,16 @@ h4 {
 
 
 #map {
-    margin-left: auto;
-    margin-right: auto;
-    width: 70vw;
-    height: 55vh;
-    max-width: none;
+  width: 100vw;
+  height: 40vh;
+  max-width: none;
 }
 
 #txtnotes {
- background: #444;
- color: #fff;
+ color: #444;
  padding: 5px;
 }
 
-
-.custom-swiper-pagination {
-  bottom: 5px;
-  left: 0;
-  width:100%;
-}
-
-.custom-swiper-pagination .swiper-pagination-bullet {
-  margin: 0 5px;
-  background: #ffc900;
-}
-
-.custom-swiper-pagination .swiper-pagination-bullet-active {
-  margin: 0 5px;
-}
-
-
-/*ionic radio buttons override*/
-.item {
-    padding: 0 !important;
-    margin-bottom: 0 !important;
-    background-color: #000;
-    color: #fff;
-    border: 1px solid #444;
-}
-
-.item-content {
-    background-color: #444 !important;
-    color: #fff;
-    font-size: 1.2em;
-}
-
-/* override radio button display with custom icon for both states */
-.item-radio input ~ .radio-icon {
-    visibility: visible !important;
-}
-
-.item-radio > .radio-icon:before {
-    content: "\f3a6" !important; /*deselected - Ionic class = ion-android-radio-button-off */
-}
-
-.item-radio > input[type=radio]:checked ~ .radio-icon:before {
-    content: "\f3a7" !important; /*selected Ionic class = ion-android-radio-button-on */
-}
 
 /*style placeholder text color*/
 

@@ -5,24 +5,18 @@
       </div>
   </ion-header-bar>
     <ion-content class="padding background" overflow-scroll="false">
-      <!-- <ion-scroll zooming="true" direction="y" style="height: 600px;"> -->
         <ion-pane class="pane yellow-pane padding">
           <ul>
             <li class=
             "question"><h4 class="login"><strong>Busted street sign?</strong></h4><br>
-              <h2 class="login">Report it.</h2></li>
-            <li class="question"><h4><strong>Car-swallowing pothole?</strong></h4><br>
-              <h2>Tell them where.</h2></li>
-            <li class="question" id="last-question"><h4><strong>Broken playground swing?</strong></h4><br>
-               <h2>Send a heads-up.</h2></li>
+              <h2 class="login-answer">Report it.</h2></li>
+            <li class="question"><h4 class="login"><strong>Car-swallowing pothole?</strong></h4><br>
+              <h2 class="login-answer">Tell them where.</h2></li>
+            <li class="question" id="last-question"><h4 class="login"><strong>Broken playground swing?</strong></h4><br>
+               <h2 class="login-answer">Send a heads-up.</h2></li>
           </ul>
           <h4 id="action">You're the expert on your city. Help it wise up by reporting problems. </h4>
-          <!-- <p><strong>It's simple.</strong></p>
-          <p>Log in to CityWise with Google. Select your city and the kind of issue you're reporting. Add a description, a location and a photo if you want.</p>
-          <p><strong>Then hit send.</strong></p>
-          <p>Ready?</p> -->
           <button class="button button-block button-energized" ng-click="LC.googleLogin()"><h4 id="google">Login with Google</h4></button>
         </ion-pane>
-      <!-- </ion-scroll> -->
     </ion-content>
 </ion-view>

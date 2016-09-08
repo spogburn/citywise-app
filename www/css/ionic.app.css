@@ -1,17 +1,20 @@
 @charset "UTF-8";
-/*!
- * Copyright 2015 Drifty Co.
- * http://drifty.com/
- *
- * Ionic, v1.3.1
- * A powerful HTML5 mobile app framework.
- * http://ionicframework.com/
- *
- * By @maxlynch, @benjsperry, @adamdbradley <3
- *
- * Licensed under the MIT license. Please see LICENSE for more information.
- *
- */
+/*
+To customize the look and feel of Ionic, you can override the variables
+in ionic's _variables.scss file.
+
+For example, you might change some of the default colors:
+
+$light:                           #fff !default;
+$stable:                          #f8f8f8 !default;
+$positive:                        #387ef5 !default;
+$calm:                            #11c1f3 !default;
+$balanced:                        #33cd5f !default;
+$energized:                       #ffc900 !default;
+$assertive:                       #ef473a !default;
+$royal:                           #886aea !default;
+$dark:                            #444 !default;
+*/
 /*!
   Ionicons, v2.0.1
   Created by Ben Sperry for the Ionic Framework, http://ionicons.com/
@@ -25,8 +28,8 @@
 */
 @font-face {
   font-family: "Ionicons";
-  src: url("../fonts/ionicons.eot?v=2.0.1");
-  src: url("../fonts/ionicons.eot?v=2.0.1#iefix") format("embedded-opentype"), url("../fonts/ionicons.ttf?v=2.0.1") format("truetype"), url("../fonts/ionicons.woff?v=2.0.1") format("woff"), url("../fonts/ionicons.woff") format("woff"), url("../fonts/ionicons.svg?v=2.0.1#Ionicons") format("svg");
+  src: url("../lib/ionic/fonts/ionicons.eot?v=2.0.1");
+  src: url("../lib/ionic/fonts/ionicons.eot?v=2.0.1#iefix") format("embedded-opentype"), url("../lib/ionic/fonts/ionicons.ttf?v=2.0.1") format("truetype"), url("../lib/ionic/fonts/ionicons.woff?v=2.0.1") format("woff"), url("../lib/ionic/fonts/ionicons.woff") format("woff"), url("../lib/ionic/fonts/ionicons.svg?v=2.0.1#Ionicons") format("svg");
   font-weight: normal;
   font-style: normal; }
 
@@ -3971,9 +3974,9 @@ a.subdued {
     border-color: #e6b500;
     background-color: #ffc900;
     background-image: linear-gradient(0deg, #e6b500, #e6b500 50%, transparent 50%);
-    color: #fff; }
+    color: #000; }
     .bar.bar-energized .title {
-      color: #fff; }
+      color: #000; }
     .bar.bar-energized.bar-footer {
       background-image: linear-gradient(180deg, #e6b500, #e6b500 50%, transparent 50%); }
   .bar.bar-royal {
@@ -4216,9 +4219,9 @@ a.subdued {
 .bar-energized .button {
   border-color: #e6b500;
   background-color: #ffc900;
-  color: #fff; }
+  color: #000; }
   .bar-energized .button:hover {
-    color: #fff;
+    color: #000;
     text-decoration: none; }
   .bar-energized .button.active, .bar-energized .button.activated {
     border-color: #e6b500;
@@ -4450,10 +4453,10 @@ a.subdued {
   border-color: #e6b500;
   background-color: #ffc900;
   background-image: linear-gradient(0deg, #e6b500, #e6b500 50%, transparent 50%);
-  color: #fff; }
+  color: #000; }
   .tabs-energized > .tabs .tab-item .badge,
   .tabs.tabs-energized .tab-item .badge {
-    background-color: #fff;
+    background-color: #000;
     color: #ffc900; }
 
 .tabs-royal > .tabs,
@@ -5773,7 +5776,7 @@ ion-tabs.tabs-striped.tabs-color-active-dark .tab-item.tab-item-active, ion-tabs
   .item.item-energized {
     border-color: #e6b500;
     background-color: #ffc900;
-    color: #fff; }
+    color: #000; }
   .item.item-royal {
     border-color: #6b46e5;
     background-color: #886aea;
@@ -5996,8 +5999,7 @@ button.item.item-complex {
   z-index: 2;
   padding: 16px 49px 16px 16px;
   border: none;
-}
-  /*background-color: #000; }*/
+  background-color: #fff; }
 
 a.item-content {
   display: block;
@@ -6105,7 +6107,7 @@ a.item-content {
 .item-complex.item-energized > .item-content {
   border-color: #e6b500;
   background-color: #ffc900;
-  color: #fff; }
+  color: #000; }
   .item-complex.item-energized > .item-content.active, .item-complex.item-energized > .item-content:active {
     border-color: #e6b500;
     background-color: #e6b500; }
@@ -6760,7 +6762,7 @@ button.item.item-button-right {
 .tabs .tab-item .badge.badge-energized,
 .badge.badge-energized {
   background-color: #ffc900;
-  color: #fff; }
+  color: #000; }
 
 .tabs .tab-item .badge.badge-royal,
 .badge.badge-royal {
@@ -7019,8 +7021,8 @@ button.item.item-button-right {
   height: 8px;
   display: inline-block;
   border-radius: 100%;
-  background: #000;
-  opacity: 0.2; }
+  background: #ffc900;
+  opacity: 0.8; }
 
 button.swiper-pagination-bullet {
   border: none;
@@ -7042,10 +7044,10 @@ button.swiper-pagination-bullet {
   opacity: 1; }
 
 .swiper-pagination-white .swiper-pagination-bullet-active {
-  background: #fff; }
+  background: #ffc900; }
 
 .swiper-pagination-black .swiper-pagination-bullet-active {
-  background: #000; }
+  background: #ffc900; }
 
 .swiper-container-vertical > .swiper-pagination {
   right: 10px;
@@ -7761,13 +7763,13 @@ input[type="color"] {
   width: 100%; }
 
 textarea {
-  padding-left: 5; }
+  padding-left: 0; }
   textarea::-moz-placeholder {
-    color: #a2a2a2; }
+    color: #aaaaaa; }
   textarea:-ms-input-placeholder {
-    color: #a2a2a2; }
+    color: #aaaaaa; }
   textarea::-webkit-input-placeholder {
-    color: #a2a2a2;
+    color: #aaaaaa;
     text-indent: -3px; }
 
 textarea {
@@ -7816,15 +7818,15 @@ input[type="file"] {
 
 input::-moz-placeholder,
 textarea::-moz-placeholder {
-  color: #a2a2a2; }
+  color: #aaaaaa; }
 
 input:-ms-input-placeholder,
 textarea:-ms-input-placeholder {
-  color: #a2a2a2; }
+  color: #aaaaaa; }
 
 input::-webkit-input-placeholder,
 textarea::-webkit-input-placeholder {
-  color: #a2a2a2;
+  color: #aaaaaa;
   text-indent: 0; }
 
 input[disabled],
@@ -8541,9 +8543,9 @@ input:checked + .checkbox-icon:after {
     color: #fff; }
   .item-select.item-energized select {
     background: #ffc900;
-    color: #fff; }
+    color: #000; }
   .item-select.item-energized:after, .item-select.item-energized .input-label {
-    color: #fff; }
+    color: #000; }
   .item-select.item-royal select {
     background: #886aea;
     color: #fff; }
@@ -8783,9 +8785,9 @@ progress {
   .button.button-energized {
     border-color: transparent;
     background-color: #ffc900;
-    color: #fff; }
+    color: #000; }
     .button.button-energized:hover {
-      color: #fff;
+      color: #000;
       text-decoration: none; }
     .button.button-energized.active, .button.button-energized.activated {
       border-color: #a2a2a2;
