@@ -35,9 +35,24 @@ app.controller('MapPageController', ['addMapService', function(ams){
 
 }])
 
-app.controller('lastPageController', ['$scope', '$ionicModal', 'submitService', 'formService', function($scope, $ionicModal, submitService, formService){
+app.controller('lastPageController', ['$scope', '$ionicModal', 'addPhotoService', 'submitService', 'formService', function($scope, $ionicModal, aps, submitService, formService){
   var vm = this;
   vm.issueShowText = false;
+
+  // state to toggle photo button
+  vm.photoTaken = aps.photoTaken;
+
+  // string to hold photo data
+  vm.photoData = '';
+
+  // takes a picture and stores its base 64 data in a variable
+  vm.takePicture = function(){
+    aps.takePicture()
+    .then(function(photoData){
+      console.log(vm.photoData);
+      vm.photoData = photoData;
+    });
+  }
 
   // gives what's in the text box to the form service
   vm.updatePageThree = function(){
@@ -77,7 +92,7 @@ app.controller('lastPageController', ['$scope', '$ionicModal', 'submitService', 
 
   //submits the form
   vm.submitWiseUp = function(){
-     ss.submit();
+     submitService.submit();
    }
 
 }])
@@ -95,19 +110,6 @@ app.controller('CityWiseController', ['$scope', '$ionicModal', '$http', 'addPhot
   }
 
 
-  // state to toggle photo button
-  vm.photoTaken = aps.photoTaken;
-  // empty object to hold form data
-
-  // an empty variable to hold the photo data
-  vm.photoData = '';
-
-  vm.takePicture = function(){
-    aps.takePicture()
-    .then(function(photoData){
-      aps.photoData = photoData;
-    });
-  }
 
 
 

@@ -19,7 +19,8 @@ app.service('addPhotoService', ['$cordovaCamera', '$http', function($cordovaCame
     return $cordovaCamera.getPicture(options)
     .then(function(pictureData){
       sv.photoTaken.done = true;
-     return 'data:image/jpeg;base64,' + pictureData;
+      sv.photoData = 'data:image/jpeg;base64,' + pictureData;
+     return 'data:image/jpeg;base64, ' + pictureData;
   });
 }
   //this method uploads the image passed into it as base64 and returns a promise where the data is an object of information about the image. the url can be accessed at data.data.secure_url
@@ -126,27 +127,27 @@ app.service('addMapService', ['$cordovaGeolocation', function($cordovaGeolocatio
   }
 }])
 
+// service that holds form values from various controllers
 app.service('formService', ['$http', function($http){
  var sv = this;
  sv.issue = {};
 }])
 
+// service to send form to server endpoint
 app.service('submitService', ['$http', '$window','addMapService', 'addPhotoService', 'formService', function($http, $window, ams, aps, formService){
   var sv = this;
   var lat = '';
   var long = '';
   var url = '';
+  var cityWiseSubmit = {};
 
   sv.submit = function(){
-
     aps.photoTaken.done = false;
     aps.uploadPicture(aps.photoData)
     .then(function(data){
       url = data;
       console.log('url', url);
-    })
-    .then(function(){
-      var cityWiseSubmit = {
+        cityWiseSubmit = {
         city: ams.cityName,
         state: ams.stateAbbr,
         category: formService.issue.type,
@@ -157,18 +158,23 @@ app.service('submitService', ['$http', '$window','addMapService', 'addPhotoServi
         long: ams.long
       }
       console.log('cityWiseSubmit', cityWiseSubmit);
-      $http.post('https://city-wise.herokuapp.com/api/city-wise', cityWiseSubmit)
+      console.log('url on the object', cityWiseSubmit.photo_url);
+    })
+    .then(function(){
+      // $http.post('https://city-wise.herokuapp.com/api/city-wise', cityWiseSubmit)
+      return $http.post('http://localhost:3000/api/city-wise', cityWiseSubmit)
     })
     .then(function(response){
       console.log('response!', response);
+      if(response.status === 200){
+        // run a function to show the user the request was successfull
+      } else {
+        // run a funcion to show the user the request was not successul
+      }
     })
     .catch(function(err){
-      console.log(err);
+      console.log('error', err);
     });
-
-
-
-
 
   }
 
