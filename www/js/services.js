@@ -73,13 +73,21 @@ app.service('addMapService', ['$cordovaGeolocation', function($cordovaGeolocatio
       };
 
       sv.map = new google.maps.Map(document.getElementById("map"), mapOptions)
-
+    var image = {
+      path: 'M0-48c-9.8 0-17.7 7.8-17.7 17.4 0 15.5 17.7 30.6 17.7 30.6s17.7-15.4 17.7-30.6c0-9.6-7.9-17.4-17.7-17.4z',
+     fillColor: '#ffc900',
+     fillOpacity: 0.8,
+     scale: 1,
+     strokeColor: '#444',
+     strokeWeight: 6
+     }
     // makes a marker
       var marker = new google.maps.Marker({
         position: positionNow,
         title: "Pinpoint your WiseUp!",
         draggable: true,
         animation: google.maps.Animation.DROP,
+        icon: image
       });
 
     // Adds the marker to the map;
@@ -93,6 +101,10 @@ app.service('addMapService', ['$cordovaGeolocation', function($cordovaGeolocatio
         console.log('lat:', sv.lat);
         console.log('long:', sv.long);
         reverseGeocode();
+      })
+
+      sv.map.addListener('dragend', function(){
+        marker.setPosition(sv.map.getCenter())
       })
 
       function reverseGeocode(){
@@ -123,7 +135,6 @@ app.service('addMapService', ['$cordovaGeolocation', function($cordovaGeolocatio
     }).catch(function(err){
       console.log('could not get location');
     });
-    google.maps.event.trigger(map, "resize")
   }
 }])
 
@@ -146,7 +157,6 @@ app.service('submitService', ['$http', '$window','addMapService', 'addPhotoServi
     aps.uploadPicture(aps.photoData)
     .then(function(data){
       url = data;
-      console.log('url', url);
         cityWiseSubmit = {
         city: ams.cityName,
         state: ams.stateAbbr,
@@ -158,11 +168,9 @@ app.service('submitService', ['$http', '$window','addMapService', 'addPhotoServi
         long: ams.long
       }
       console.log('cityWiseSubmit', cityWiseSubmit);
-      console.log('url on the object', cityWiseSubmit.photo_url);
     })
     .then(function(){
-      // $http.post('https://city-wise.herokuapp.com/api/city-wise', cityWiseSubmit)
-      return $http.post('http://localhost:3000/api/city-wise', cityWiseSubmit)
+      return $http.post('https://city-wise.herokuapp.com/api/city-wise', cityWiseSubmit)
     })
     .then(function(response){
       console.log('response!', response);

@@ -5,9 +5,7 @@ app.controller('LoginController', ['$state', '$http', '$cordovaOauth', '$window'
 
 var CLIENT_ID = '386825602244-09eg7osmai1qi07nbo9maefjpff7h0dm.apps.googleusercontent.com';
 var vm = this;
-console.log('here');
   vm.googleLogin = function() {
-    console.log('sup');
       $cordovaOauth.google(CLIENT_ID, ["https://www.googleapis.com/auth/userinfo.email"])
       .then(function(result) {
         $ionicLoading.show({
@@ -97,21 +95,16 @@ app.controller('lastPageController', ['$scope', '$ionicModal', 'addPhotoService'
 
 }])
 /* aps is short for addPhotoSrvice */
-app.controller('CityWiseController', ['$scope', '$ionicModal', '$http', 'addPhotoService', 'submitService', '$cordovaGeolocation', '$location', 'formService', function($scope, $ionicModal, $http, aps, ss, $cordovaGeolocation, $location, formService){
+app.controller('CityWiseController', ['formService', function(formService){
   var vm = this;
   vm.issue = {};
   vm.issue.type = 'roads' || formService.issue.type;
-
 
   //update form
   vm.updatePageOne = function(){
     formService.issue.type = vm.issue.type;
     console.log('form service issue', formService.issue);
   }
-
-
-
-
 
 
 }])
