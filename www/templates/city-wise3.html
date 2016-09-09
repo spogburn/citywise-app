@@ -3,7 +3,7 @@
       <img class="logo-image" src="img/city_wise_logo.svg" height="35px"/>
     </div>
 </ion-header-bar>
-<ion-content class="citywise-form has-header" scroll="false">
+<ion-content class="citywise-form has-header" overflow-scroll="true">
 <div class="list padding">
     <div class="list">
       <h4 style="color:#777;">Share a photo of the issue so your city knows what the problem looks like!</h4>
@@ -12,12 +12,18 @@
     </div>
     <div class="list">
       <h4 style="color:#777;">Add a few words to describe the issue</h4>
-      <button class="button icon-left ion-ios-compose-outline" ng-click="modal.show()">Add Description</button>
+      <div ng-show="LPC.issueShowText" style="padding:10px 5px 3px 5px; background-color:#edebeb; margin-top:5px; margin-bottom:5px;">
+        <p style="color:#777; font-size:1.5em;">
+          {{LPC.issue.txt}}
+        </p>
+      </div>
+      <button class="button icon-left ion-ios-compose-outline" ng-hide="LPC.issueShowText" ng-click="modal.show()">Add Description</button>
+      <button class="button icon-left ion-ios-compose-outline" ng-show="LPC.issueShowText" ng-click="modal.show()">Edit Description</button>
       </div>
       <div class="col text-left">
       <a href="#/city-wise2">  <button class="button button-dark button-outline button-border">Back</button></a>
       </div>
-    <button class="button button-energized button-block" style="color:#000; margin-top: 15px;" ng-click="CWC.submitWiseUp(CWC.issue)">Submit WiseUp!
+    <button class="button button-energized button-block" style="color:#000; margin-top: 15px;" ng-click="CWC.submitWiseUp()">Submit WiseUp!
     </button>
   </div>
 </ion-content>

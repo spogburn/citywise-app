@@ -122,50 +122,53 @@ app.service('addMapService', ['$cordovaGeolocation', function($cordovaGeolocatio
     }).catch(function(err){
       console.log('could not get location');
     });
+    google.maps.event.trigger(map, "resize")
   }
 }])
 
-app.service('submitService', ['$http', '$window','addMapService', 'addPhotoService', function($http, $window, ams, aps){
+app.service('formService', ['$http', function($http){
+ var sv = this;
+ sv.issue = {};
+}])
+
+app.service('submitService', ['$http', '$window','addMapService', 'addPhotoService', 'formService', function($http, $window, ams, aps, formService){
   var sv = this;
   var lat = '';
   var long = '';
   var url = '';
 
-  sv.submit = function(issue){
+  sv.submit = function(){
+
     aps.photoTaken.done = false;
-    aps.uploadPicture(issue.photoData)
+    aps.uploadPicture(aps.photoData)
     .then(function(data){
       url = data;
+      console.log('url', url);
+    })
+    .then(function(){
+      var cityWiseSubmit = {
+        city: ams.cityName,
+        state: ams.stateAbbr,
+        category: formService.issue.type,
+        issue: formService.issue.txt,
+        photo_url: url,
+        user_email: $window.localStorage.email,
+        lat: ams.lat,
+        long: ams.long
+      }
+      console.log('cityWiseSubmit', cityWiseSubmit);
+      $http.post('https://city-wise.herokuapp.com/api/city-wise', cityWiseSubmit)
+    })
+    .then(function(response){
+      console.log('response!', response);
     })
     .catch(function(err){
       console.log(err);
     });
 
-    console.log('issue, ', issue);
-    console.log('lat: ', ams.lat);
-    console.log('long', ams.long);
-    console.log('cityname', ams.cityName);
-    console.log('state abbr', ams.stateAbbr);
-    console.log('photodata', url);
 
-    var cityWiseSubmit = {
-      city: ams.cityName,
-      state: ams.stateAbbr,
-      category: issue.type,
-      issue: issue.txt,
-      photo_url: url,
-      user_email: $window.localStorage.email,
-      lat: ams.lat,
-      long: ams.long
-    }
 
-    // $http.post('https://city-wise.herokuapp.com/api/city-wise', cityWiseSubmit)
-    // .then(function(response){
-    //   console.log('response!', response);
-    // })
-    // .catch(function(err){
-    //   console.log('err', err);
-    // })
+
 
   }
 

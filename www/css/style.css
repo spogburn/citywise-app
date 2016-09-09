@@ -15,17 +15,6 @@ body {
     background-size: cover;
 }
 
-/* login screen background image */
-.background-bw {
-    background: url("../img/pexels-photo-68257.jpg") no-repeat center center fixed;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    background-size: cover;
-    background-color: rgba(191, 191, 191, 0.7);
-    background-blend-mode: lighten;
-    background-size: cover;
-}
-
 .citywise-form {
   background-color:#ffffff;
 }
@@ -42,9 +31,10 @@ body {
   padding-left: 10px;
   padding-right: 10px;
 }
-.scroll {
-    height: 100vh;
-}
+
+/*.scroll {
+  height: 100vh;
+}*/
 
 .category{
   margin-top: 10%;

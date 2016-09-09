@@ -34,7 +34,7 @@ app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider){
   $stateProvider
   .state('login', {
     url: '/login',
-    templateUrl: 'templates/login.html',
+    templateUrl: './templates/login.html',
     controller: 'LoginController as LC'
   })
   .state('city-wise', {
@@ -45,32 +45,15 @@ app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider){
   .state('city-wise2', {
     url: '/city-wise2',
     templateUrl: './templates/city-wise2.html',
-    controller: 'CityWiseController as CWC'
+    controller: 'MapPageController as MPC'
   })
   .state('city-wise3', {
       url: '/city-wise3',
       templateUrl: './templates/city-wise3.html',
-      controller: 'CityWiseController as CWC'
-    })
-  // .state('tabs.city-wise.photo'), {
-  //   url: '/city-wise/photo',
-  //   views: {
-  //     'photo': {
-  //       templateUrl: '.templates/photo.html'
-  //     }
-  //   }
-  // }
-  .state('tabs.home', {
-    url: '/home',
-    views: {
-      'home': {
-        templateUrl: './templates/home.html',
-        controller: 'HomeController as HC'
-      }
-    }
+      controller: 'lastPageController as LPC'
   })
   $urlRouterProvider.otherwise('/login')
-})
+});
 
 app.factory('authInterceptor', ['$q', '$window', function ($q, $window) {
   return {
@@ -93,26 +76,3 @@ app.factory('authInterceptor', ['$q', '$window', function ($q, $window) {
 app.config(['$httpProvider', function ($httpProvider) {
   $httpProvider.interceptors.push('authInterceptor');
 }]);
-
-  //     vm.googleLogin = function(){
-  //
-  //     $cordovaOauth.google(CLIENT_ID, ["email","profile"]).then(function(result) {
-  //         vm.showProfile = false;
-  //         $http.get("https://www.googleapis.com/plus/v1/people/me", {params: {access_token: result.access_token }})
-  //         .then(function(res) {
-  //
-  //          vm.showProfile = true;
-  //          vm.details = res.data;
-  //          console.log('details: ', vm.details);
-  //
-  //         }, function(error) {
-  //             alert("Error: " + error);
-  //         });
-  //
-  //     },function(error) {
-  //           // error
-  //           vm.details = 'got error';
-  //           console.log('error:', error);
-  //       });
-  //
-  // }

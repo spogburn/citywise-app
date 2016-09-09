@@ -3,17 +3,17 @@
       <img class="logo-image" src="img/city_wise_logo.svg" height="35px"/>
     </div>
 </ion-header-bar>
-<ion-content class="citywise-form has-header" scroll="false">
+<ion-content class="citywise-form has-header" overflow-scroll="true">
       <div class="list form-list">
         <div class="padding">
           <h4 style="color:#777;">Thanks for helping make your city better! Let's start by choosing the type of issue you're reporting.</h4>
           <h3>What category best describes your issue?</h3>
         </div>
         <ion-list>
-          <ion-radio ng-model="CWC.issue.type" value="roads" class="item item-light">Roads</ion-radio>
-          <ion-radio ng-model="CWC.issue.type" value="parks" class="item item-light">Parks &amp; Rec</ion-radio>
-          <ion-radio ng-model="CWC.issue.type" value="transit" class="item item-light">Public Transit</ion-radio>
-          <ion-radio ng-model="CWC.issue.type" value="utilities" class="item item-light">Utilities</ion-radio>
+          <ion-radio ng-change="CWC.updatePageOne()" ng-model="CWC.issue.type" value="roads" class="item item-light">Roads</ion-radio>
+          <ion-radio ng-change="CWC.updatePageOne()" ng-model="CWC.issue.type" value="parks" class="item item-light">Parks &amp; Rec</ion-radio>
+          <ion-radio ng-change="CWC.updatePageOne()" ng-model="CWC.issue.type" value="transit" class="item item-light">Public Transit</ion-radio>
+          <ion-radio ng-change="CWC.updatePageOne()" ng-model="CWC.issue.type" value="utilities" class="item item-light">Utilities</ion-radio>
         </ion-list>
       </div>
       <div class="row padding">

@@ -1,30 +1,52 @@
 'use strict';
 
-/* aps is short for addPhotoSrvice */
-app.controller('CityWiseController', ['$scope','$ionicModal', '$http', 'addPhotoService', 'addMapService', 'submitService', '$cordovaGeolocation', function($scope, $ionicModal, $http, aps, ams, ss, $cordovaGeolocation){
-  var vm = this;
-  // this makes it so the map never loads on ionic browser.
-  document.addEventListener("deviceready", onDeviceReady, false);
-    function onDeviceReady() {
-        console.log("navigator.geolocation function about to run");
-        ams.getMap();
-    }
 
-  // comment this out when not testing in ionic
+app.controller('LoginController', ['$state', '$http', '$cordovaOauth', '$window', '$ionicLoading', function($state, $http, $cordovaOauth, $window, $ionicLoading){
+
+var CLIENT_ID = '386825602244-09eg7osmai1qi07nbo9maefjpff7h0dm.apps.googleusercontent.com';
+var vm = this;
+console.log('here');
+  vm.googleLogin = function() {
+    console.log('sup');
+      $cordovaOauth.google(CLIENT_ID, ["https://www.googleapis.com/auth/userinfo.email"])
+      .then(function(result) {
+        $ionicLoading.show({
+          templateUrl: './templates/loading.html'
+        })
+      return $http.post('https://city-wise.herokuapp.com/google-login', result)
+    })
+    .then(function(jwt){
+      console.log('jwt:', jwt);
+      $window.localStorage.token = jwt.data.token;
+      $window.localStorage.email = jwt.data.profile.email;
+      console.log('about to redirect');
+      $ionicLoading.hide();
+      $state.go('city-wise')
+      }), function(error) {
+          console.log('error:', error);
+      };
+  }
+}])
+
+app.controller('MapPageController', ['addMapService', function(ams){
+  var vm = this;
+  // runs on page load to load the map
   ams.getMap();
 
-  // state to toggle photo button
-  vm.photoTaken = aps.photoTaken;
-  // empty object to hold form data
-  vm.issue = {};
-  // an empty variable to hold the photo data
-  vm.photoData = '';
+}])
 
-  vm.takePicture = function(){
-    aps.takePicture()
-    .then(function(photoData){
-      vm.issue.photoData = photoData;
-    });
+app.controller('lastPageController', ['$scope', '$ionicModal', 'submitService', 'formService', function($scope, $ionicModal, submitService, formService){
+  var vm = this;
+  vm.issueShowText = false;
+
+  // gives what's in the text box to the form service
+  vm.updatePageThree = function(){
+    vm.issueShowText = true;
+    if(vm.issue.txt === ""){
+      vm.issueShowText = false;
+    }
+    formService.issue.txt = vm.issue.txt;
+    console.log('form service issue', formService.issue);
   }
 
   //make the form modal
@@ -53,38 +75,41 @@ app.controller('CityWiseController', ['$scope','$ionicModal', '$http', 'addPhoto
   // Execute action
 });
 
+  //submits the form
   vm.submitWiseUp = function(){
-     ss.submit(vm.issue);
+     ss.submit();
    }
 
 }])
-
-app.controller('HomeController', ['$http', function($http){
+/* aps is short for addPhotoSrvice */
+app.controller('CityWiseController', ['$scope', '$ionicModal', '$http', 'addPhotoService', 'submitService', '$cordovaGeolocation', '$location', 'formService', function($scope, $ionicModal, $http, aps, ss, $cordovaGeolocation, $location, formService){
   var vm = this;
-}])
+  vm.issue = {};
+  vm.issue.type = 'roads' || formService.issue.type;
 
-app.controller('LoginController', ['$state', '$http', '$cordovaOauth', '$window', '$ionicLoading', function($state, $http, $cordovaOauth, $window, $ionicLoading){
 
-  var CLIENT_ID = '386825602244-09eg7osmai1qi07nbo9maefjpff7h0dm.apps.googleusercontent.com';
-  var vm = this;
-
-  vm.googleLogin = function() {
-      $cordovaOauth.google(CLIENT_ID, ["https://www.googleapis.com/auth/userinfo.email"])
-      .then(function(result) {
-        $ionicLoading.show({
-          templateUrl: './templates/loading.html'
-        })
-      return $http.post('https://city-wise.herokuapp.com/google-login', result)
-    })
-    .then(function(jwt){
-      console.log('jwt:', jwt);
-      $window.localStorage.token = jwt.data.token;
-      $window.localStorage.email = jwt.data.profile.email;
-      console.log('about to redirect');
-      $ionicLoading.hide();
-      $state.go('city-wise')
-      }), function(error) {
-          console.log('error:', error);
-      };
+  //update form
+  vm.updatePageOne = function(){
+    formService.issue.type = vm.issue.type;
+    console.log('form service issue', formService.issue);
   }
+
+
+  // state to toggle photo button
+  vm.photoTaken = aps.photoTaken;
+  // empty object to hold form data
+
+  // an empty variable to hold the photo data
+  vm.photoData = '';
+
+  vm.takePicture = function(){
+    aps.takePicture()
+    .then(function(photoData){
+      aps.photoData = photoData;
+    });
+  }
+
+
+
+
 }])
