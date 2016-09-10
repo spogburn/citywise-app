@@ -17,7 +17,6 @@ var vm = this;
       console.log('jwt:', jwt);
       $window.localStorage.token = jwt.data.token;
       $window.localStorage.email = jwt.data.profile.email;
-      console.log('about to redirect');
       $ionicLoading.hide();
       $state.go('city-wise')
       }), function(error) {

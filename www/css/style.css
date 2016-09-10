@@ -78,14 +78,10 @@ a {
   max-height: none !important;
 }*/
 
-#loading {
-  margin-top: 30%;
+.spinner svg {
+  width: 40px;
+  height: 40px;
 }
-
-#sending {
-  margin-top: 30%;
-}
-
 
 #logo-header {
   margin-bottom: 0;

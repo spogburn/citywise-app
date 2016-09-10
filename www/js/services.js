@@ -163,8 +163,10 @@ app.service('submitService', ['$http', '$window','addMapService', 'addPhotoServi
       formService.error.show = true;
     } else {
       // toggles photo view
+      $ionicLoading.show({
+        templateUrl: './templates/sending.html'
+      })
       aps.photo.taken = false;
-
       aps.uploadPicture(aps.photo.data)
       .then(function(data){
         url = data;
@@ -182,15 +184,13 @@ app.service('submitService', ['$http', '$window','addMapService', 'addPhotoServi
         console.log('cityWiseSubmit', cityWiseSubmit);
       })
       .then(function(){
-        $ionicLoading.show({
-          templateUrl: './templates/sending.html'
-        })
         return $http.post('https://city-wise.herokuapp.com/api/city-wise', cityWiseSubmit)
       })
       .then(function(response){
         console.log('response!', response);
         if(response.status === 200){
           $ionicLoading.hide();
+          cityWiseSubmit = {};
           $state.go('success');
         } else {
           $ionicLoading.hide();
@@ -200,6 +200,8 @@ app.service('submitService', ['$http', '$window','addMapService', 'addPhotoServi
       })
       .catch(function(err){
         console.log('error', err);
+        $ionicLoading.hide();
+        $state.go('failure');
       });
     }
   }
