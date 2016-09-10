@@ -78,9 +78,14 @@ a {
   max-height: none !important;
 }*/
 
-.loading {
+#loading {
   margin-top: 30%;
 }
+
+#sending {
+  margin-top: 30%;
+}
+
 
 #logo-header {
   margin-bottom: 0;

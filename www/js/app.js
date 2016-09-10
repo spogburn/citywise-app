@@ -56,6 +56,7 @@ app.constant("config", {
 app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider){
   $ionicConfigProvider
   .spinner.icon('spiral')
+  $ionicConfigProvider.views.swipeBackEnabled(false)
 
   $stateProvider
   .state('login', {

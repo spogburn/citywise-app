@@ -35,20 +35,6 @@ app.service('addPhotoService', ['$cordovaCamera', '$http', function($cordovaCame
         console.log('error', err);
       });
   };
-  //
-  // sv.takeAndSend = function() {
-  //    sv.takePicture()
-  //      .then(function(image) {
-  //        return sv.uploadPicture(image);
-  //      })
-  //      .then(function(_url) {
-  //       sv.url = _url;
-  //       console.log('url:', sv.url);
-  //     })
-  //      .catch(function(err) {
-  //        console.log('error', err);
-  //      });
-  //  };
 
 }])
 
@@ -179,9 +165,10 @@ app.service('submitService', ['$http', '$window','addMapService', 'addPhotoServi
       // toggles photo view
       aps.photo.taken = false;
 
-      aps.uploadPicture(aps.photoData)
+      aps.uploadPicture(aps.photo.data)
       .then(function(data){
         url = data;
+        console.log('url', url);
           cityWiseSubmit = {
           city: ams.cityName,
           state: ams.stateAbbr,
@@ -206,6 +193,8 @@ app.service('submitService', ['$http', '$window','addMapService', 'addPhotoServi
           $ionicLoading.hide();
           $state.go('success');
         } else {
+          $ionicLoading.hide();
+          $state.go('failure');
           // run a funcion to show the user the request was not successul
         }
       })
