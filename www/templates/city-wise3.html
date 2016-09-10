@@ -7,22 +7,22 @@
 <div class="list padding">
     <div class="list">
       <h4 style="color:#777;">Share a photo of the issue you're reporting.</h4>
-      <div ng-show="LPC.photoTaken.done">
+      <div ng-show="LPC.photo.taken">
         <img style="display:inline; width:100px;height:100px;" id="base64image"
-       src="{{LPC.photoData}}" alt="issue photo"/>
+       src="{{LPC.photo.data}}" alt="issue photo"/>
       </div>
-      <button class="button icon-left ion-ios-camera-outline" ng-click="LPC.takePicture()" ng-hide="LPC.photoTaken.done">Take a photo</button>
-        <button class="button icon-left ion-ios-camera-outline" ng-click="LPC.takePicture()" ng-show="LPC.photoTaken.done">Retake your photo</button>
+      <button class="button icon-left ion-ios-camera-outline" ng-click="LPC.takePicture()" ng-hide="LPC.photo.taken">Take a photo</button>
+        <button class="button icon-left ion-ios-camera-outline" ng-click="LPC.takePicture()" ng-show="LPC.photo.taken">Retake your photo</button>
     </div>
     <div class="list">
       <h4 style="color:#777;">Add a few words to describe the issue</h4>
-      <div ng-show="LPC.issueShowText" style="padding:10px 5px 3px 5px; background-color:#edebeb; margin-top:5px; margin-bottom:5px;">
+      <div ng-show="LPC.issue.show" style="padding:10px 5px 3px 5px; background-color:#edebeb; margin-top:5px; margin-bottom:5px;">
         <p style="color:#777; font-size:1.5em;">
           {{LPC.issue.txt}}
         </p>
       </div>
-      <button class="button icon-left ion-ios-compose-outline" ng-hide="LPC.issueShowText" ng-click="modal.show()">Add Description</button>
-      <button class="button icon-left ion-ios-compose-outline" ng-show="LPC.issueShowText" ng-click="modal.show()">Edit Description</button>
+      <button class="button icon-left ion-ios-compose-outline" ng-hide="LPC.issue.show" ng-click="modal.show()">Add Description</button>
+      <button class="button icon-left ion-ios-compose-outline" ng-show="LPC.issue.show" ng-click="modal.show()">Edit Description</button>
       </div>
       <div class="col text-left">
       <a href="#/city-wise2">  <button class="button button-dark button-outline button-border">Back</button></a>

@@ -2,8 +2,7 @@ app.service('addPhotoService', ['$cordovaCamera', '$http', function($cordovaCame
 
   var sv = this;
   sv.url = '' ;
-  sv.photoData = '';
-  sv.photoTaken = {};
+  sv.photo = {};
 
   //this method will open the camera app. It returns a promise with the data being the base64 encoded image
   sv.takePicture = function() {
@@ -18,8 +17,8 @@ app.service('addPhotoService', ['$cordovaCamera', '$http', function($cordovaCame
     };
     return $cordovaCamera.getPicture(options)
     .then(function(pictureData){
-      sv.photoTaken.done = true;
-      sv.photoData = 'data:image/jpeg;base64,' + pictureData;
+      sv.photo.taken = true;
+      sv.photo.data = 'data:image/jpeg;base64,' + pictureData;
      return 'data:image/jpeg;base64, ' + pictureData;
   });
 }
@@ -55,6 +54,8 @@ app.service('addPhotoService', ['$cordovaCamera', '$http', function($cordovaCame
 
 app.service('addMapService', ['$cordovaGeolocation', function($cordovaGeolocation){
   var sv = this;
+  sv.map = {};
+
   var posOptions = {timeout: 20000, enableHighAccuracy: false};
 
   sv.getMap = function(){
@@ -64,7 +65,9 @@ app.service('addMapService', ['$cordovaGeolocation', function($cordovaGeolocatio
      sv.lat = position.coords.latitude;
      sv.long = position.coords.longitude
      var positionNow = new google.maps.LatLng(sv.lat, sv.long);
+
      reverseGeocode();
+
      var mapOptions = {
         center: positionNow,
         zoom: 15,
@@ -72,7 +75,9 @@ app.service('addMapService', ['$cordovaGeolocation', function($cordovaGeolocatio
         mapTypeId: google.maps.MapTypeId.ROADMAP
       };
 
-      sv.map = new google.maps.Map(document.getElementById("map"), mapOptions)
+    sv.map = new google.maps.Map(document.getElementById("map"), mapOptions)
+
+    console.log('sv.map', sv.map);
     var image = {
       path: 'M0-48c-9.8 0-17.7 7.8-17.7 17.4 0 15.5 17.7 30.6 17.7 30.6s17.7-15.4 17.7-30.6c0-9.6-7.9-17.4-17.7-17.4z',
      fillColor: '#ffc900',
@@ -81,6 +86,7 @@ app.service('addMapService', ['$cordovaGeolocation', function($cordovaGeolocatio
      strokeColor: '#444',
      strokeWeight: 6
      }
+
     // makes a marker
       var marker = new google.maps.Marker({
         position: positionNow,
@@ -131,17 +137,23 @@ app.service('addMapService', ['$cordovaGeolocation', function($cordovaGeolocatio
           }
         })
       }
-
     }).catch(function(err){
       console.log('could not get location');
     });
   }
+
 }])
 
 // service that holds form values from various controllers
 app.service('formService', ['$http', function($http){
  var sv = this;
  sv.issue = {};
+ sv.update = function(text){
+   sv.issue.show = true;
+   sv.issue.txt = text;
+ }
+
+
 }])
 
 // service to send form to server endpoint

@@ -26,39 +26,28 @@ var vm = this;
   }
 }])
 
-app.controller('MapPageController', ['addMapService', function(ams){
-  var vm = this;
-  // runs on page load to load the map
+app.controller('MapPageController', ['$scope', 'addMapService', function($scope, ams){
+  console.log('running map controller ');
   ams.getMap();
-
 }])
 
 app.controller('lastPageController', ['$scope', '$ionicModal', 'addPhotoService', 'submitService', 'formService', function($scope, $ionicModal, aps, submitService, formService){
   var vm = this;
-  vm.issueShowText = false;
 
-  // state to toggle photo button
-  vm.photoTaken = aps.photoTaken;
+  // object to hold photo state
+  vm.photo = aps.photo;
 
-  // string to hold photo data
-  vm.photoData = '';
+  //object to hold form state
+  vm.issue = formService.issue;
 
   // takes a picture and stores its base 64 data in a variable
   vm.takePicture = function(){
     aps.takePicture()
-    .then(function(photoData){
-      console.log(vm.photoData);
-      vm.photoData = photoData;
-    });
   }
 
   // gives what's in the text box to the form service
-  vm.updatePageThree = function(){
-    vm.issueShowText = true;
-    if(vm.issue.txt === ""){
-      vm.issueShowText = false;
-    }
-    formService.issue.txt = vm.issue.txt;
+  vm.updatePageThree = function(text){
+    formService.update(text)
     console.log('form service issue', formService.issue);
   }
 

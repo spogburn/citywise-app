@@ -23,6 +23,32 @@ app.run(function($ionicPlatform) {
   });
 })
 
+// app.run(['$state', '$rootScope', function($state, $rootScope){
+//   // $rootScope.$on('$viewContentLoading', function(event, viewConfig){
+//   //   if (viewConfig.view.url.source === '/city-wise2'){
+//   //
+//   //   }
+//   //   console.log('toState', viewConfig.view.url.source);
+//   //
+//   //   console.log('vC', viewConfig.targetView);
+//   // })
+//   $rootScope.$on('$stateChangeStart', function(event, toState){
+//     // event.preventDefault()
+//
+//     if (toState.url === '/city-wise2'){
+//       // $state.reload()
+//       // console.log($state.reload());
+//       // MPC.getMap();
+//     }
+//     console.log(event);
+//
+//     console.log(toState);
+
+//
+//   })
+// }])
+
+
 app.constant("config", {
         "apiUrl": "https://city-wise.herokuapp.com/",
     })
@@ -44,6 +70,7 @@ app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider){
   })
   .state('city-wise2', {
     url: '/city-wise2',
+    cache: false,
     templateUrl: './templates/city-wise2.html',
     controller: 'MapPageController as MPC'
   })

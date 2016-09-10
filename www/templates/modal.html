@@ -6,11 +6,11 @@
     <ion-content class="padding">
       <div class="list">
            <label class="item item-input">
-             <textarea id="txtnotes" name="issue-text" rows="5" placeholder="e.g: Tree is hiding stop sign on Remington and Stuart."  onfocus="this.placeholder = ''" onblur="this.placeholder = 'e.g: Tree is hiding stop sign on Remington and Stuart.'"  ng-model="LPC.issue.txt" ng-change="LPC.updatePageThree()">
+             <textarea id="txtnotes" name="issue-text" rows="5" placeholder="e.g: Tree is hiding stop sign on Remington and Stuart."  onfocus="this.placeholder = ''" onblur="this.placeholder = 'e.g: Tree is hiding stop sign on Remington and Stuart.'"  ng-model="txt" ng-change="LPC.updatePageThree(txt)">
              </textarea>
            </label>
 
-       <button class="button button-block button-dark button-outline" style="margin-top: 5%;" ng-click="modal.hide()">Add Description</button>
+       <button class="button button-block button-dark button-outline" style="margin-top: 5%;" ng-click="modal.hide()">Save</button>
       </div>
     </ion-content>
   </ion-modal-view>
