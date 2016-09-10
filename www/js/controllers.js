@@ -27,7 +27,6 @@ var vm = this;
 }])
 
 app.controller('MapPageController', ['$scope', 'addMapService', function($scope, ams){
-  console.log('running map controller ');
   ams.getMap();
 }])
 
@@ -39,6 +38,10 @@ app.controller('lastPageController', ['$scope', '$ionicModal', 'addPhotoService'
 
   //object to hold form state
   vm.issue = formService.issue;
+
+  // object for errors
+  vm.error = formService.error;
+  console.log(vm.error);
 
   // takes a picture and stores its base 64 data in a variable
   vm.takePicture = function(){
@@ -79,7 +82,7 @@ app.controller('lastPageController', ['$scope', '$ionicModal', 'addPhotoService'
 
   //submits the form
   vm.submitWiseUp = function(){
-     submitService.submit();
+      submitService.submit();
    }
 
 }])

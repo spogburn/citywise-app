@@ -116,18 +116,18 @@ app.service('addMapService', ['$cordovaGeolocation', function($cordovaGeolocatio
       function reverseGeocode(){
         var geocoder = new google.maps.Geocoder;
         var latlng = {lat: sv.lat, lng: sv.long}
-        console.log('latlng,', latlng);
+        // console.log('latlng,', latlng);
         geocoder.geocode({'location': latlng}, function(results, status){
           if (status === 'OK'){
             if (results[0]){
-              console.log(results[0]);
+              // console.log(results[0]);
               var results = results[0].formatted_address;
               // this gets the name of the city although i am not currently using this
               sv.cityName = results.split(', ')[1];
               // this gets the state two letter abbr ditto not using
               sv.stateAbbr = results.split(', ')[2].substring(0,2);
-              console.log(sv.cityName);
-              console.log(sv.stateAbbr);
+              // console.log(sv.cityName);
+              // console.log(sv.stateAbbr);
             }
             else {
               console.log('no results found');
@@ -148,9 +148,15 @@ app.service('addMapService', ['$cordovaGeolocation', function($cordovaGeolocatio
 app.service('formService', ['$http', function($http){
  var sv = this;
  sv.issue = {};
+ sv.error = {};
+
  sv.update = function(text){
    sv.issue.show = true;
    sv.issue.txt = text;
+   if (sv.issue.txt === '') {
+     sv.issue.show = false;
+   }
+   sv.error.show = false;
  }
 
 
@@ -165,7 +171,11 @@ app.service('submitService', ['$http', '$window','addMapService', 'addPhotoServi
   var cityWiseSubmit = {};
 
   sv.submit = function(){
-    aps.photoTaken.done = false;
+    if(formService.issue.txt === undefined || formService.issue.txt === ''){
+      console.log('you need to add txt!');
+      formService.error.show = true;
+    }
+    aps.photo.taken = false;
     aps.uploadPicture(aps.photoData)
     .then(function(data){
       url = data;
