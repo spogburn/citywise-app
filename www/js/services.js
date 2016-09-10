@@ -163,7 +163,7 @@ app.service('formService', ['$http', function($http){
 }])
 
 // service to send form to server endpoint
-app.service('submitService', ['$http', '$window','addMapService', 'addPhotoService', 'formService', function($http, $window, ams, aps, formService){
+app.service('submitService', ['$http', '$window','addMapService', 'addPhotoService', 'formService', '$ionicLoading', '$state', function($http, $window, ams, aps, formService, $ionicLoading, $state){
   var sv = this;
   var lat = '';
   var long = '';
@@ -171,41 +171,48 @@ app.service('submitService', ['$http', '$window','addMapService', 'addPhotoServi
   var cityWiseSubmit = {};
 
   sv.submit = function(){
+    // if they haven't added the right things, they get an error and nothing happens
     if(formService.issue.txt === undefined || formService.issue.txt === ''){
       console.log('you need to add txt!');
       formService.error.show = true;
-    }
-    aps.photo.taken = false;
-    aps.uploadPicture(aps.photoData)
-    .then(function(data){
-      url = data;
-        cityWiseSubmit = {
-        city: ams.cityName,
-        state: ams.stateAbbr,
-        category: formService.issue.type,
-        issue: formService.issue.txt,
-        photo_url: url,
-        user_email: $window.localStorage.email,
-        lat: ams.lat,
-        long: ams.long
-      }
-      console.log('cityWiseSubmit', cityWiseSubmit);
-    })
-    .then(function(){
-      return $http.post('https://city-wise.herokuapp.com/api/city-wise', cityWiseSubmit)
-    })
-    .then(function(response){
-      console.log('response!', response);
-      if(response.status === 200){
-        // run a function to show the user the request was successfull
-      } else {
-        // run a funcion to show the user the request was not successul
-      }
-    })
-    .catch(function(err){
-      console.log('error', err);
-    });
+    } else {
+      // toggles photo view
+      aps.photo.taken = false;
 
+      aps.uploadPicture(aps.photoData)
+      .then(function(data){
+        url = data;
+          cityWiseSubmit = {
+          city: ams.cityName,
+          state: ams.stateAbbr,
+          category: formService.issue.type,
+          issue: formService.issue.txt,
+          photo_url: url,
+          user_email: $window.localStorage.email,
+          lat: ams.lat,
+          long: ams.long
+        }
+        console.log('cityWiseSubmit', cityWiseSubmit);
+      })
+      .then(function(){
+        $ionicLoading.show({
+          templateUrl: './templates/sending.html'
+        })
+        return $http.post('https://city-wise.herokuapp.com/api/city-wise', cityWiseSubmit)
+      })
+      .then(function(response){
+        console.log('response!', response);
+        if(response.status === 200){
+          $ionicLoading.hide();
+          $state.go('success');
+        } else {
+          // run a funcion to show the user the request was not successul
+        }
+      })
+      .catch(function(err){
+        console.log('error', err);
+      });
+    }
   }
 
   // sv.submit = function(form){

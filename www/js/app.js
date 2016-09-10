@@ -79,6 +79,10 @@ app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider){
       templateUrl: './templates/city-wise3.html',
       controller: 'lastPageController as LPC'
   })
+  .state('success', {
+    url: '/success',
+    templateUrl: './templates/success.html'
+  })
   $urlRouterProvider.otherwise('/login')
 });
 

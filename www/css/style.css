@@ -78,7 +78,7 @@ a {
   max-height: none !important;
 }*/
 
-#loading {
+.loading {
   margin-top: 30%;
 }
 
@@ -91,6 +91,7 @@ a {
 h3{
   margin-top: 10px;
 }
+
 h2.login-answer {
   display: inline-block;
   color: white;
@@ -114,15 +115,16 @@ h4.login {
   margin-right: 6%;
 }
 
-.loading {
+/*.loading {
   background: #ffc900;
-
-}
+}*/
 
 textarea{
   font-size: 1.4em;
   line-height: 2;
+  width: 80vw;
 }
+
 #google {
   color: black;
   text-shadow: none;
