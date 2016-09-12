@@ -6,7 +6,6 @@ app.service('addPhotoService', ['$cordovaCamera', '$http', function($cordovaCame
 
   //this method will open the camera app. It returns a promise with the data being the base64 encoded image
   sv.takePicture = function() {
-    console.log('in photo function!');
     var options = {
       destinationType: Camera.DestinationType.DATA_URL,
       sourceType: Camera.PictureSourceType.CAMERA,
@@ -21,6 +20,22 @@ app.service('addPhotoService', ['$cordovaCamera', '$http', function($cordovaCame
       sv.photo.data = 'data:image/jpeg;base64,' + pictureData;
      return 'data:image/jpeg;base64, ' + pictureData;
   });
+}
+
+sv.addPicture = function() {
+  var options = {
+    destinationType: Camera.DestinationType.DATA_URL,
+    sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+    encodingType: Camera.EncodingType.JPEG,
+    allowEdit: 1,
+    correctOrientation: true
+  };
+  return $cordovaCamera.getPicture(options)
+  .then(function(pictureData){
+    sv.photo.taken = true;
+    sv.photo.data = 'data:image/jpeg;base64,' + pictureData;
+   return 'data:image/jpeg;base64, ' + pictureData;
+});
 }
   //this method uploads the image passed into it as base64 and returns a promise where the data is an object of information about the image. the url can be accessed at data.data.secure_url
   sv.uploadPicture = function(imageInfo) {
@@ -136,6 +151,11 @@ app.service('formService', ['$http', function($http){
  sv.issue = {};
  sv.error = {};
 
+ sv.cancel = function(){
+   sv.issue.txt = '';
+   sv.issue.show = false;
+   console.log(sv.issue);
+ }
  sv.update = function(text){
    sv.issue.show = true;
    sv.issue.txt = text;
@@ -151,8 +171,6 @@ app.service('formService', ['$http', function($http){
 // service to send form to server endpoint
 app.service('submitService', ['$http', '$window','addMapService', 'addPhotoService', 'formService', '$ionicLoading', '$state', function($http, $window, ams, aps, formService, $ionicLoading, $state){
   var sv = this;
-  var lat = '';
-  var long = '';
   var url = '';
   var cityWiseSubmit = {};
 
@@ -180,7 +198,9 @@ app.service('submitService', ['$http', '$window','addMapService', 'addPhotoServi
           user_email: $window.localStorage.email,
           lat: ams.lat,
           long: ams.long
-        }
+        };
+        formService.issue.txt = '';
+        formService.issue.show = false;
         console.log('cityWiseSubmit', cityWiseSubmit);
       })
       .then(function(){
@@ -190,7 +210,6 @@ app.service('submitService', ['$http', '$window','addMapService', 'addPhotoServi
         console.log('response!', response);
         if(response.status === 200){
           $ionicLoading.hide();
-          cityWiseSubmit = {};
           $state.go('success');
         } else {
           $ionicLoading.hide();

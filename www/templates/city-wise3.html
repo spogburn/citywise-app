@@ -4,25 +4,28 @@
     </div>
 </ion-header-bar>
 <ion-content class="citywise-form has-header" overflow-scroll="true">
-<div class="list padding">
-    <div class="list">
-      <h4 style="color:#777;">Share a photo of the issue you're reporting.</h4>
+<div class="list">
+    <div class="list page-three">
+      <h4 style="color:#777;">If you want, you can add a photo of what you're reporting.</h4>
       <div ng-show="LPC.photo.taken">
         <img style="display:inline; width:100px;height:100px;" id="base64image"
        src="{{LPC.photo.data}}" alt="issue photo"/>
       </div>
-      <button class="button icon-left ion-ios-camera-outline" ng-click="LPC.takePicture()" ng-hide="LPC.photo.taken">Take a photo</button>
+      <div class="button-bar">
+      <button class="button icon-left ion-ios-camera-outline" ng-click="LPC.takePicture()" ng-hide="LPC.photo.taken">Take photo</button>
+      <button class="button icon-left ion-ios-camera-outline left-bar" ng-click="LPC.addPicture()" ng-hide="LPC.photo.taken">From album</button>
+      </div>
         <button class="button icon-left ion-ios-camera-outline" ng-click="LPC.takePicture()" ng-show="LPC.photo.taken">Retake your photo</button>
     </div>
-    <div class="list">
-      <h4 style="color:#777;">Add a few words to describe the issue</h4>
-      <div ng-show="LPC.issue.show" style="padding:10px 5px 3px 5px; background-color:#edebeb; margin-top:5px; margin-bottom:5px;">
-        <p style="color:#777; font-size:1.5em;">
+    <div class="list page-three">
+      <h4 style="color:#777;">Share a brief description of the issue.</h4>
+      <div class="row" ng-show="LPC.issue.show" ng-click="modal.show()" style="padding:10px 5px 3px 5px; background-color:#f8f8f8; margin-top:5px; margin-bottom:5px; position:relative;">
+        <i style="font-size: 2em; color:#777; position:absolute; top:0; right:5px;"  class="icon icon-right ion-ios-compose-outline"></i>
+        <p class="col col-80" style="color:#777; font-size:1.2em;">
           {{LPC.issue.txt}}
         </p>
       </div>
       <button class="button icon-left ion-ios-compose-outline" ng-hide="LPC.issue.show" ng-click="modal.show()">Add Description</button>
-      <button class="button icon-left ion-ios-compose-outline" ng-show="LPC.issue.show" ng-click="modal.show()">Edit Description</button>
       </div>
       <div class="list" ng-show="LPC.error.show">
         <h4 style="color:rgb(255, 84, 0)">Make sure to describe the issue before you send the form!</h4>

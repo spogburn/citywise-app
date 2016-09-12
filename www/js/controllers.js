@@ -14,11 +14,12 @@ var vm = this;
       return $http.post('https://city-wise.herokuapp.com/google-login', result)
     })
     .then(function(jwt){
-      console.log('jwt:', jwt);
+      console.log('jwt email:', jwt.data.profile.email);
       $window.localStorage.token = jwt.data.token;
       $window.localStorage.email = jwt.data.profile.email;
       $ionicLoading.hide();
       $state.go('city-wise')
+
       }), function(error) {
           console.log('error:', error);
       };
@@ -38,9 +39,12 @@ app.controller('lastPageController', ['$scope', '$ionicModal', 'addPhotoService'
   //object to hold form state
   vm.issue = formService.issue;
 
+  // holds the textarea text for clearing in case of cancel
+  vm.txt = '';
+
   // object for errors
   vm.error = formService.error;
-  console.log(vm.error);
+
 
   // takes a picture and stores its base 64 data in a variable
   vm.takePicture = function(){
@@ -49,8 +53,7 @@ app.controller('lastPageController', ['$scope', '$ionicModal', 'addPhotoService'
 
   // gives what's in the text box to the form service
   vm.updatePageThree = function(text){
-    formService.update(text)
-    console.log('form service issue', formService.issue);
+    formService.update(text);
   }
 
   //make the form modal
@@ -60,24 +63,18 @@ app.controller('lastPageController', ['$scope', '$ionicModal', 'addPhotoService'
     }).then(function(modal) {
       $scope.modal = modal;
     });
+    $scope.cancelModal = function(){
+      vm.txt = '';
+      formService.cancel()
+      $scope.modal.hide();
+    }
     $scope.openModal = function() {
       $scope.modal.show();
     };
     $scope.closeModal = function() {
       $scope.modal.hide();
     };
-    // Cleanup the modal when we're done with it!
-    $scope.$on('$destroy', function() {
-      $scope.modal.remove();
-    });
-    // Execute action on hide modal
-    $scope.$on('modal.hidden', function() {
-      // Execute action
-    });
-// Execute action on remove modal
-    $scope.$on('modal.removed', function() {
-  // Execute action
-});
+
 
   //submits the form
   vm.submitWiseUp = function(){
@@ -94,7 +91,7 @@ app.controller('CityWiseController', ['formService', function(formService){
   //update form
   vm.updatePageOne = function(){
     formService.issue.type = vm.issue.type;
-    console.log('form service issue', formService.issue);
+
   }
 
 
