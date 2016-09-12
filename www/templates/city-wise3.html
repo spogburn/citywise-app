@@ -15,7 +15,8 @@
       <button class="button icon-left ion-ios-camera-outline" ng-click="LPC.takePicture()" ng-hide="LPC.photo.taken">Take photo</button>
       <button class="button icon-left ion-ios-camera-outline left-bar" ng-click="LPC.addPicture()" ng-hide="LPC.photo.taken">From album</button>
       </div>
-        <button class="button icon-left ion-ios-camera-outline" ng-click="LPC.takePicture()" ng-show="LPC.photo.taken">Retake your photo</button>
+        <button class="button icon-left ion-ios-camera-outline" ng-click="LPC.takePicture()" ng-show="LPC.photo.taken">Take Photo</button>
+        <button class="button icon-left ion-ios-camera-outline`" ng-click="LPC.addPicture()" ng-show="LPC.photo.taken">Choose another</button>
     </div>
     <div class="list page-three">
       <h4 style="color:#777;">Share a brief description of the issue.</h4>

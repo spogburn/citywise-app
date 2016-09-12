@@ -47,7 +47,7 @@ sv.addPicture = function() {
         return data.data.secure_url;
       })
       .catch(function(err){
-        console.log('error', err);
+        return err;
       });
   };
 
@@ -56,6 +56,8 @@ sv.addPicture = function() {
 app.service('addMapService', ['$cordovaGeolocation', function($cordovaGeolocation){
   var sv = this;
   sv.map = {};
+  sv.lat = '';
+  sv.long = '';
 
   var posOptions = {timeout: 20000, enableHighAccuracy: false};
 
@@ -63,9 +65,13 @@ app.service('addMapService', ['$cordovaGeolocation', function($cordovaGeolocatio
     console.log('running get map');
     $cordovaGeolocation.getCurrentPosition(posOptions)
     .then(function(position){
-     sv.lat = position.coords.latitude;
-     sv.long = position.coords.longitude
-     var positionNow = new google.maps.LatLng(sv.lat, sv.long);
+     if (sv.lat !== '' && sv.long !== ''){
+       var positionNow = new google.maps.LatLng(sv.lat, sv.long);
+     } else {
+       sv.lat = position.coords.latitude;
+       sv.long = position.coords.longitude
+       var positionNow = new google.maps.LatLng(sv.lat, sv.long);
+     }
 
      reverseGeocode();
 
@@ -78,7 +84,7 @@ app.service('addMapService', ['$cordovaGeolocation', function($cordovaGeolocatio
 
     sv.map = new google.maps.Map(document.getElementById("map"), mapOptions)
 
-    console.log('sv.map', sv.map);
+    // console.log('sv.map', sv.map);
     var image = {
       path: 'M0-48c-9.8 0-17.7 7.8-17.7 17.4 0 15.5 17.7 30.6 17.7 30.6s17.7-15.4 17.7-30.6c0-9.6-7.9-17.4-17.7-17.4z',
      fillColor: '#ffc900',
@@ -151,11 +157,16 @@ app.service('formService', ['$http', function($http){
  sv.issue = {};
  sv.error = {};
 
+ sv.issue.type = 'roads';
+
+// cancel modal clear text
  sv.cancel = function(){
    sv.issue.txt = '';
    sv.issue.show = false;
    console.log(sv.issue);
  }
+
+ // update from page 3
  sv.update = function(text){
    sv.issue.show = true;
    sv.issue.txt = text;
@@ -165,16 +176,16 @@ app.service('formService', ['$http', function($http){
    sv.error.show = false;
  }
 
-
 }])
 
 // service to send form to server endpoint
-app.service('submitService', ['$http', '$window','addMapService', 'addPhotoService', 'formService', '$ionicLoading', '$state', function($http, $window, ams, aps, formService, $ionicLoading, $state){
+app.service('submitService', ['$http', '$window','addMapService', 'addPhotoService', 'formService', '$ionicLoading', '$state', 'production', function($http, $window, ams, aps, formService, $ionicLoading, $state, production){
   var sv = this;
   var url = '';
   var cityWiseSubmit = {};
 
   sv.submit = function(){
+    console.log(production.apiUrl);
     // if they haven't added the right things, they get an error and nothing happens
     if(formService.issue.txt === undefined || formService.issue.txt === ''){
       console.log('you need to add txt!');
@@ -185,10 +196,15 @@ app.service('submitService', ['$http', '$window','addMapService', 'addPhotoServi
         templateUrl: './templates/sending.html'
       })
       aps.photo.taken = false;
+
+
       aps.uploadPicture(aps.photo.data)
       .then(function(data){
-        url = data;
-        console.log('url', url);
+        if (data.data.error){
+          url = 'https://placehold.it/200x200'
+        } else {
+          url = data;
+        }
           cityWiseSubmit = {
           city: ams.cityName,
           state: ams.stateAbbr,
@@ -201,10 +217,10 @@ app.service('submitService', ['$http', '$window','addMapService', 'addPhotoServi
         };
         formService.issue.txt = '';
         formService.issue.show = false;
-        console.log('cityWiseSubmit', cityWiseSubmit);
+        console.log('cityWiseSubmit', JSON.stringify(cityWiseSubmit));
       })
       .then(function(){
-        return $http.post('https://city-wise.herokuapp.com/api/city-wise', cityWiseSubmit)
+        return $http.post(production.apiUrl + 'api/city-wise', cityWiseSubmit)
       })
       .then(function(response){
         console.log('response!', response);
@@ -212,29 +228,19 @@ app.service('submitService', ['$http', '$window','addMapService', 'addPhotoServi
           $ionicLoading.hide();
           $state.go('success');
         } else {
+          console.log(JSON.stringify(response));
           $ionicLoading.hide();
           $state.go('failure');
           // run a funcion to show the user the request was not successul
         }
       })
       .catch(function(err){
-        console.log('error', err);
+        console.log('error', JSON.stringify(err));
         $ionicLoading.hide();
         $state.go('failure');
       });
     }
   }
-
-  // sv.submit = function(form){
-  //   // get user location in lt and long
-  //   $http.post('http://localhost:3000/api/say-something', form){
-  //       console.log(lat + '   ' + long);
-  //    }).then(function(data){
-  //    })
-  //    .catch(function(err){
-  //      console.log('error in submitting form', err);
-  //    })
-  // }
 
 
 }])

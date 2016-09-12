@@ -26,8 +26,12 @@ var vm = this;
   }
 }])
 
-app.controller('MapPageController', ['$scope', 'addMapService', function($scope, ams){
-  ams.getMap();
+app.controller('MapPageController', ['$scope', 'addMapService', '$state', function($scope, ams, $state){
+  $scope.$on('$stateChangeSuccess', function() {
+    ams.getMap();
+    console.log('running code');
+});
+
 }])
 
 app.controller('lastPageController', ['$scope', '$ionicModal', 'addPhotoService', 'submitService', 'formService', function($scope, $ionicModal, aps, submitService, formService){
@@ -51,6 +55,9 @@ app.controller('lastPageController', ['$scope', '$ionicModal', 'addPhotoService'
     aps.takePicture()
   }
 
+  vm.addPicture = function(){
+    aps.addPicture()
+  }
   // gives what's in the text box to the form service
   vm.updatePageThree = function(text){
     formService.update(text);
@@ -91,7 +98,6 @@ app.controller('CityWiseController', ['formService', function(formService){
   //update form
   vm.updatePageOne = function(){
     formService.issue.type = vm.issue.type;
-
   }
 
 

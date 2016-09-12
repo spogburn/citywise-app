@@ -125,11 +125,8 @@ h4.login {
   margin-right: 6%;
 }
 
-/*.loading {
-  background: #ffc900;
-}*/
 
-textarea{
+textarea {
   font-size: 1.4em;
   line-height: 2;
   width: 80vw;
