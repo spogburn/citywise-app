@@ -53,102 +53,153 @@ sv.addPicture = function() {
 
 }])
 
-app.service('addMapService', ['$cordovaGeolocation', function($cordovaGeolocation){
+app.service('addMapService', ['$cordovaGeolocation', '$ionicPopup', '$ionicGesture', function($cordovaGeolocation, $ionicPopup, $ionicGesture){
   var sv = this;
   sv.map = {};
   sv.lat = '';
   sv.long = '';
-
   var posOptions = {timeout: 20000, enableHighAccuracy: false};
 
-  sv.getMap = function(){
-    console.log('running get map');
-    $cordovaGeolocation.getCurrentPosition(posOptions)
-    .then(function(position){
-     if (sv.lat !== '' && sv.long !== ''){
-       var positionNow = new google.maps.LatLng(sv.lat, sv.long);
-     } else {
-       sv.lat = position.coords.latitude;
-       sv.long = position.coords.longitude
-       var positionNow = new google.maps.LatLng(sv.lat, sv.long);
-     }
+  // checks if user has location services enabled
+   sv.checkLocationService = function(){
+     cordova.plugins.diagnostic.isLocationEnabled(
+        function(e) {
+          console.log('e', e);
+            if (e){
+              console.log('location is enabled');
+            }
+            else {
+              $ionicPopup.alert({
+                title: 'Error getting location',
+                content: 'CityWise needs you to enable location services. Otherwise you won\'t be able to notify your city of problems.',
+                buttons: [{text: 'Okay',type: 'button-energized'}]
+              }).then(function(res) {
+                console.log('Location Not Turned ON');
+                cordova.plugins.diagnostic.switchToLocationSettings();
+              });
+            }
+           },
+       function(e) {
+           alert('Error ' + e );
+       });
+   }
 
-     reverseGeocode();
 
-     var mapOptions = {
-        center: positionNow,
-        zoom: 15,
-        draggable: true,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-      };
+    sv.getMap = function(){
+      $cordovaGeolocation.getCurrentPosition(posOptions)
+      .then(function(position){
+       if (sv.lat !== '' && sv.long !== ''){
+        positionNow = new google.maps.LatLng(sv.lat, sv.long);
+       } else {
+         sv.lat = position.coords.latitude;
+         sv.long = position.coords.longitude
+        positionNow = new google.maps.LatLng(sv.lat, sv.long);
+        }
 
-    sv.map = new google.maps.Map(document.getElementById("map"), mapOptions)
+        reverseGeocode(sv.lat, sv.long);
 
-    // console.log('sv.map', sv.map);
-    var image = {
-      path: 'M0-48c-9.8 0-17.7 7.8-17.7 17.4 0 15.5 17.7 30.6 17.7 30.6s17.7-15.4 17.7-30.6c0-9.6-7.9-17.4-17.7-17.4z',
-     fillColor: '#ffc900',
-     fillOpacity: 0.8,
-     scale: 1,
-     strokeColor: '#444',
-     strokeWeight: 6
-     }
+      var mapOptions = {
+          center: positionNow,
+          zoom: 15,
+          draggable: true,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
 
-    // makes a marker
-      var marker = new google.maps.Marker({
-        position: positionNow,
-        title: "Pinpoint your WiseUp!",
-        draggable: true,
-        animation: google.maps.Animation.DROP,
-        icon: image
-      });
+      sv.map = new google.maps.Map(document.getElementById("map"), mapOptions)
 
-    // Adds the marker to the map;
-      marker.setMap(sv.map);
+      // console.log('sv.map', sv.map);
+      var image = {
+        path: 'M0-48c-9.8 0-17.7 7.8-17.7 17.4 0 15.5 17.7 30.6 17.7 30.6s17.7-15.4 17.7-30.6c0-9.6-7.9-17.4-17.7-17.4z',
+       fillColor: '#ffc900',
+       fillOpacity: 0.8,
+       scale: 1,
+       strokeColor: '#444',
+       strokeWeight: 6
+       }
 
-    // listens for the lat/long of the marker
-      marker.addListener('dragend', function(){
-        sv.lat = marker.getPosition().lat();
-        sv.long = marker.getPosition().lng();
-        sv.map.setCenter(marker.getPosition());
-        console.log('lat:', sv.lat);
-        console.log('long:', sv.long);
-        reverseGeocode();
+      // makes a marker
+        var marker = new google.maps.Marker({
+          position: positionNow,
+          title: "Pinpoint your WiseUp!",
+          draggable: true,
+          animation: google.maps.Animation.DROP,
+          icon: image
+        });
+
+      // sv.map.$ionicGesture.on('hold', function(e){
+      //   console.log('e', e);
+      //   console.log(e).getPosition().lat();
+      // })
+
+      sv.map.addListener('click', function(e){
+        console.log('click e', e);
+        var clickLat = e.latLng.lat()
+        var clickLong = e.latLng.lng()
+        marker.setPosition(new google.maps.LatLng(clickLat, clickLong));
+        marker.setMap(sv.map);
+        sv.map.setCenter(marker.getPosition())
       })
+      // Adds the marker to the map;
 
-      sv.map.addListener('dragend', function(){
-        marker.setPosition(sv.map.getCenter())
-      })
 
-      function reverseGeocode(){
+      // listens for the lat/long of the marker
+        marker.addListener('dragend', function(){
+          sv.lat = marker.getPosition().lat();
+          sv.long = marker.getPosition().lng();
+          sv.map.setCenter(marker.getPosition());
+          console.log('lat:', sv.lat);
+          console.log('long:', sv.long);
+          reverseGeocode();
+        })
+
+        // listens for the lat/long of the marker
+          // marker.addListener('mouseup', function(){
+          //   sv.lat = marker.getPosition().lat();
+          //   sv.long = marker.getPosition().lng();
+          //   sv.map.setCenter(marker.getPosition());
+          //   console.log('lat:', sv.lat);
+          //   console.log('long:', sv.long);
+          //   reverseGeocode();
+          // })
+
+        sv.map.addListener('dragend', function(){
+          marker.setPosition(sv.map.getCenter())
+        })
+        //
+        // sv.map.addListener('click', function(){
+        //   marker.setPosition(sv.map.getCenter())
+        // })
+
+
+     }).catch(function(err){
+        console.log('error with getting location', err);
+     });
+   }
+
+      // this function reverse geocodes to get city and state name
+      function reverseGeocode(lat, long){
+
         var geocoder = new google.maps.Geocoder;
-        var latlng = {lat: sv.lat, lng: sv.long}
-        // console.log('latlng,', latlng);
+
+        var latlng = {lat: lat, lng: long}
+
         geocoder.geocode({'location': latlng}, function(results, status){
           if (status === 'OK'){
             if (results[0]){
               // console.log(results[0]);
               var results = results[0].formatted_address;
-              // this gets the name of the city although i am not currently using this
+              // this gets the name of the city
               sv.cityName = results.split(', ')[1];
-              // this gets the state two letter abbr ditto not using
+              // this gets the state two letter abbr
               sv.stateAbbr = results.split(', ')[2].substring(0,2);
-              // console.log(sv.cityName);
-              // console.log(sv.stateAbbr);
-            }
-            else {
-              console.log('no results found');
+            }  else {
+              console.log('no geocoder results found');
             }
           } else {
-            console.log('status not ok', status);
+            console.log('status for geocoder not ok', status);
           }
         })
       }
-    }).catch(function(err){
-      console.log('could not get location');
-    });
-  }
-
 }])
 
 // service that holds form values from various controllers
@@ -197,13 +248,11 @@ app.service('submitService', ['$http', '$window','addMapService', 'addPhotoServi
       })
       aps.photo.taken = false;
 
-
       aps.uploadPicture(aps.photo.data)
       .then(function(data){
-        if (data.data.error){
+        url = data;
+        if (data.status === 400){
           url = 'https://placehold.it/200x200'
-        } else {
-          url = data;
         }
           cityWiseSubmit = {
           city: ams.cityName,
@@ -235,7 +284,7 @@ app.service('submitService', ['$http', '$window','addMapService', 'addPhotoServi
         }
       })
       .catch(function(err){
-        console.log('error', JSON.stringify(err));
+        console.log('catch error', JSON.stringify(err));
         $ionicLoading.hide();
         $state.go('failure');
       });

@@ -29,9 +29,7 @@ var vm = this;
 app.controller('MapPageController', ['$scope', 'addMapService', '$state', function($scope, ams, $state){
   $scope.$on('$stateChangeSuccess', function() {
     ams.getMap();
-    console.log('running code');
-});
-
+  });
 }])
 
 app.controller('lastPageController', ['$scope', '$ionicModal', 'addPhotoService', 'submitService', 'formService', function($scope, $ionicModal, aps, submitService, formService){
@@ -90,10 +88,13 @@ app.controller('lastPageController', ['$scope', '$ionicModal', 'addPhotoService'
 
 }])
 /* aps is short for addPhotoSrvice */
-app.controller('CityWiseController', ['formService', function(formService){
+app.controller('CityWiseController', ['formService', 'addMapService', '$scope', '$state', function(formService, ams, $scope, $state){
   var vm = this;
   vm.issue = {};
   vm.issue.type = 'roads' || formService.issue.type;
+  $scope.$on('$stateChangeSuccess', function(){
+      ams.checkLocationService();
+  })
 
   //update form
   vm.updatePageOne = function(){
