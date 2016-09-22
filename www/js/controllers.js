@@ -8,12 +8,12 @@ var CLIENT_ID = '386825602244-09eg7osmai1qi07nbo9maefjpff7h0dm.apps.googleuserco
 var vm = this;
 
   vm.googleLogin = function() {
+    console.log('login');
     $ionicLoading.show({
         templateUrl: './templates/loading.html'
       })
       $cordovaOauth.google(CLIENT_ID, ["https://www.googleapis.com/auth/userinfo.email"])
       .then(function(result) {
-        console.log('RESULT!!!' , JSON.stringify(result));
         return $http.post('https://city-wise.herokuapp.com/google-login', result);
     })
     .then(function(jwt){

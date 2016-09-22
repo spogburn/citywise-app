@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 var app = angular.module('CityWise', ['ionic', 'ngCordova', 'ngCordovaOauth'])
 
-app.run(function($ionicPlatform) {
+app.run(function($ionicPlatform, $ionicPopup) {
   $ionicPlatform.ready(function() {
     if(window.cordova && window.cordova.plugins.Keyboard) {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -20,8 +20,25 @@ app.run(function($ionicPlatform) {
     if(window.StatusBar) {
       StatusBar.styleDefault();
     }
+    // checks if there is internet
+    if(window.Connection){
+      console.log('navigator connection type', navigator.connection.type);
+      if(navigator.connection.type == Connection.NONE){
+        $ionicPopup.confirm({
+          title: "No Internet Connection",
+          content: "CityWise needs an internet connection to work. ",
+          okType: 'button-energized'
+        })
+        .then(function(result){
+          console.log('result', result);
+          if(!result){
+            ionic.Platform.exitApp();
+          }
+        })
+      }
+    }
   });
-})
+});
 
 app.constant("production", {
         "apiUrl": "https://city-wise.herokuapp.com/"

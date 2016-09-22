@@ -53,7 +53,7 @@ sv.addPicture = function() {
 
 }])
 
-app.service('addMapService', ['$cordovaGeolocation', '$ionicPopup', '$ionicGesture', function($cordovaGeolocation, $ionicPopup, $ionicGesture){
+app.service('addMapService', ['$cordovaGeolocation', '$ionicPopup', function($cordovaGeolocation, $ionicPopup){
   var sv = this;
   sv.map = {};
   sv.lat = '';
