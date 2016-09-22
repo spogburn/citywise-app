@@ -64,18 +64,28 @@ app.service('addMapService', ['$cordovaGeolocation', '$ionicPopup', '$ionicGestu
    sv.checkLocationService = function(){
      cordova.plugins.diagnostic.isLocationEnabled(
         function(e) {
-          console.log('e', e);
             if (e){
-              console.log('location is enabled');
             }
             else {
               $ionicPopup.alert({
-                title: 'Error getting location',
-                content: 'CityWise needs you to enable location services. Otherwise you won\'t be able to notify your city of problems.',
+                title: 'Trouble getting location',
+                content: 'CityWise needs you to enable location services in order to notify your city of problems.',
                 buttons: [{text: 'Okay',type: 'button-energized'}]
               }).then(function(res) {
-                console.log('Location Not Turned ON');
+                if (ionic.Platform.isIOS()) {
+                  $ionicPopup.alert({
+                    title: 'How to turn on location',
+                    content: 'In your general settings, go to privacy. Then switch Location Services on',
+                    buttons: [{text: 'Open Settings',type: 'button-energized'}]
+                  })
+                  .then(function(){
+                    cordova.plugins.diagnostic.switchToSettings();
+                  })
+                }
+                else {
                 cordova.plugins.diagnostic.switchToLocationSettings();
+                }
+
               });
             }
            },
@@ -96,7 +106,7 @@ app.service('addMapService', ['$cordovaGeolocation', '$ionicPopup', '$ionicGestu
         positionNow = new google.maps.LatLng(sv.lat, sv.long);
         }
 
-        reverseGeocode(sv.lat, sv.long);
+      reverseGeocode(sv.lat, sv.long);
 
       var mapOptions = {
           center: positionNow,
@@ -107,7 +117,6 @@ app.service('addMapService', ['$cordovaGeolocation', '$ionicPopup', '$ionicGestu
 
       sv.map = new google.maps.Map(document.getElementById("map"), mapOptions)
 
-      // console.log('sv.map', sv.map);
       var image = {
         path: 'M0-48c-9.8 0-17.7 7.8-17.7 17.4 0 15.5 17.7 30.6 17.7 30.6s17.7-15.4 17.7-30.6c0-9.6-7.9-17.4-17.7-17.4z',
        fillColor: '#ffc900',
@@ -126,20 +135,15 @@ app.service('addMapService', ['$cordovaGeolocation', '$ionicPopup', '$ionicGestu
           icon: image
         });
 
-      // sv.map.$ionicGesture.on('hold', function(e){
-      //   console.log('e', e);
-      //   console.log(e).getPosition().lat();
-      // })
+      // Adds the marker to the map;
+      marker.setMap(sv.map);
 
       sv.map.addListener('click', function(e){
-        console.log('click e', e);
         var clickLat = e.latLng.lat()
         var clickLong = e.latLng.lng()
         marker.setPosition(new google.maps.LatLng(clickLat, clickLong));
-        marker.setMap(sv.map);
         sv.map.setCenter(marker.getPosition())
       })
-      // Adds the marker to the map;
 
 
       // listens for the lat/long of the marker
@@ -247,6 +251,7 @@ app.service('submitService', ['$http', '$window','addMapService', 'addPhotoServi
         templateUrl: './templates/sending.html'
       })
       aps.photo.taken = false;
+
 
       aps.uploadPicture(aps.photo.data)
       .then(function(data){

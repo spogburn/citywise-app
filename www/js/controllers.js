@@ -4,26 +4,50 @@
 app.controller('LoginController', ['$state', '$http', '$cordovaOauth', '$window', '$ionicLoading', function($state, $http, $cordovaOauth, $window, $ionicLoading){
 
 var CLIENT_ID = '386825602244-09eg7osmai1qi07nbo9maefjpff7h0dm.apps.googleusercontent.com';
+
 var vm = this;
+
   vm.googleLogin = function() {
+    $ionicLoading.show({
+        templateUrl: './templates/loading.html'
+      })
       $cordovaOauth.google(CLIENT_ID, ["https://www.googleapis.com/auth/userinfo.email"])
       .then(function(result) {
-        $ionicLoading.show({
-          templateUrl: './templates/loading.html'
-        })
-      return $http.post('https://city-wise.herokuapp.com/google-login', result)
+        console.log('RESULT!!!' , JSON.stringify(result));
+        return $http.post('https://city-wise.herokuapp.com/google-login', result);
     })
     .then(function(jwt){
-      console.log('jwt email:', jwt.data.profile.email);
       $window.localStorage.token = jwt.data.token;
       $window.localStorage.email = jwt.data.profile.email;
-      $ionicLoading.hide();
       $state.go('city-wise')
-
-      }), function(error) {
-          console.log('error:', error);
-      };
+      })
+      .catch(function(error) {
+          console.log('error:', JSON.stringify(error));
+      });
   }
+}])
+
+
+
+/* aps is short for addPhotoSrvice */
+app.controller('CityWiseController', ['formService', 'addMapService', '$scope', '$state', '$ionicLoading', function(formService, ams, $scope, $state, $ionicLoading){
+
+  $ionicLoading.show({
+    templateUrl: './templates/loading.html',
+    duration: 1500
+  })
+
+  ams.checkLocationService();
+
+  var vm = this;
+  vm.issue = {};
+  vm.issue.type = 'roads' || formService.issue.type;
+
+  //update form
+  vm.updatePageOne = function(){
+    formService.issue.type = vm.issue.type;
+  }
+
 }])
 
 app.controller('MapPageController', ['$scope', 'addMapService', '$state', function($scope, ams, $state){
@@ -85,21 +109,5 @@ app.controller('lastPageController', ['$scope', '$ionicModal', 'addPhotoService'
   vm.submitWiseUp = function(){
       submitService.submit();
    }
-
-}])
-/* aps is short for addPhotoSrvice */
-app.controller('CityWiseController', ['formService', 'addMapService', '$scope', '$state', function(formService, ams, $scope, $state){
-  var vm = this;
-  vm.issue = {};
-  vm.issue.type = 'roads' || formService.issue.type;
-  $scope.$on('$stateChangeSuccess', function(){
-      ams.checkLocationService();
-  })
-
-  //update form
-  vm.updatePageOne = function(){
-    formService.issue.type = vm.issue.type;
-  }
-
 
 }])

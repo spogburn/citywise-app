@@ -24,7 +24,7 @@ app.run(function($ionicPlatform) {
 })
 
 app.constant("production", {
-        "apiUrl": "https://city-wise.herokuapp.com/",
+        "apiUrl": "https://city-wise.herokuapp.com/"
     })
 
 app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider){
@@ -36,7 +36,8 @@ app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider){
   .state('login', {
     url: '/login',
     templateUrl: './templates/login.html',
-    controller: 'LoginController as LC'
+    controller: 'LoginController as LC',
+    cache: false
   })
   .state('city-wise', {
     url: '/city-wise',

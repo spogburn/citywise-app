@@ -3,7 +3,7 @@
       <img class="logo-image" src="img/citywise-logo.svg" height="35px"/>
     </div>
 </ion-header-bar>
-<ion-content class="citywise-form has-header" overflow-scroll="true">
+<ion-content class="citywise-form has-header padding" overflow-scroll="true">
 <div class="list">
     <div class="list page-three">
       <h4 style="color:#777;">If you want, you can add a photo of what you're reporting.</h4>
@@ -29,7 +29,7 @@
       <button class="button icon-left ion-ios-compose-outline" ng-hide="LPC.issue.show" ng-click="modal.show()">Add Description</button>
       </div>
       <div class="list" ng-show="LPC.error.show">
-        <h4 style="color:rgb(255, 84, 0)">Make sure to describe the issue before you send the form!</h4>
+        <h4 style="color:rgb(255, 84, 0);">Make sure to add a description before you send the form!</h4>
       </div>
       <div class="col text-left">
       <a href="#/city-wise2"><button class="button button-dark button-outline button-border">Back</button></a>
