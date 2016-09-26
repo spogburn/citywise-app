@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 var app = angular.module('CityWise', ['ionic', 'ngCordova', 'ngCordovaOauth'])
 
-app.run(function($ionicPlatform, $ionicPopup, $state, authService) {
+app.run(['$ionicPlatform', '$ionicPopup', '$rootScope', '$state', '$location', 'authService', function($ionicPlatform, $ionicPopup, $rootScope, $state, $location, authService) {
   $ionicPlatform.ready(function() {
     if(window.cordova && window.cordova.plugins.Keyboard) {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -38,8 +38,31 @@ app.run(function($ionicPlatform, $ionicPopup, $state, authService) {
       }
     }
 
+    // this is used if you log out from within the application and log in again
+  //   $rootScope.$on('$stateChangeStart', function(e, toState){
+  //     console.log('running root scope');
+  //     console.log(toState);
+  //     if (!authService.checkAuth()){
+  //       console.log('unauthorized');
+  //       $location.path('/login')
+  //     }
+  //     else {
+  //       console.log('auth');
+  //       $location.path('/city-wise')
+  //       return;
+  //     }
+  //   })
+  //
   });
-});
+  //
+  // if (!authService.checkAuth()){
+  //   console.log('unauthorized outside root scope');
+  //   $location.path('/login')
+  //   $rootScope.$apply()
+  // }
+
+
+}]);
 
 app.constant("production", {
         "apiUrl": "https://city-wise.herokuapp.com/"
@@ -55,13 +78,6 @@ app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider){
     url: '/login',
     templateUrl: './templates/login.html',
     controller: 'LoginController as LC',
-    // onEnter: function($state, authService){
-    //   if(authService.checkAuth()){
-    //     console.log('authenticated!');
-    //     // event.preventDefault();
-    //     $state.go('city-wise');
-    //   }
-    // },
     cache: false
   })
   .state('city-wise', {
@@ -88,7 +104,7 @@ app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider){
     url: '/failure',
     templateUrl: './templates/failure.html'
   })
-  $urlRouterProvider.otherwise('/login')
+  $urlRouterProvider.otherwise('login')
 });
 
 app.factory('authInterceptor', ['$q', '$window', function ($q, $window) {

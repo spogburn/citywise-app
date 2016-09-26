@@ -1,12 +1,18 @@
 'use strict';
 
 
-app.controller('LoginController', ['$state', '$http', '$cordovaOauth', '$window', '$ionicLoading', '$ionicPopup', function($state, $http, $cordovaOauth, $window, $ionicLoading, $ionicPopup){
+app.controller('LoginController', ['$state', '$http', '$cordovaOauth', '$window', '$ionicLoading', '$ionicPopup', 'authService', function($state, $http, $cordovaOauth, $window, $ionicLoading, $ionicPopup, authService){
 
 var CLIENT_ID = '386825602244-09eg7osmai1qi07nbo9maefjpff7h0dm.apps.googleusercontent.com';
 
 var vm = this;
-  
+
+  // if(authService.checkAuth()){
+  //   $state.go('city-wise')
+  // }
+console.log('window token in login', $window.localStorage.token);
+
+  // plan to move this to a service to keep logic out of controller
   vm.googleLogin = function() {
     console.log('login');
     $ionicLoading.show({
@@ -17,6 +23,7 @@ var vm = this;
         return $http.post('https://city-wise.herokuapp.com/google-login', result);
     })
     .then(function(jwt){
+      console.log('jwt', jwt);
       $window.localStorage.token = jwt.data.token;
       $window.localStorage.email = jwt.data.profile.email;
       $state.go('city-wise')
@@ -37,39 +44,45 @@ var vm = this;
         })
       });
   }
+
 }])
 
 
 /* ams is short for addMapService */
-app.controller('CityWiseController', ['formService', 'addMapService', '$scope', '$state', '$ionicLoading', function(formService, ams, $scope, $state, $ionicLoading){
-
+app.controller('CityWiseController', ['formService', 'addMapService', '$scope', '$state', '$ionicLoading', '$ionicPlatform', 'authService', '$ionicPopup', function(formService, ams, $scope, $state, $ionicLoading, $ionicPlatform, authService, $ionicPopup){
+  console.log('citywise controller');
   $ionicLoading.show({
     templateUrl: './templates/loading.html',
     duration: 1500
   })
 
   //checks if location is enabled if not prompts to enable
-  ams.checkLocationService();
+  $ionicPlatform.ready(function(){
+    ams.checkLocationService();
+  })
 
   var vm = this;
   vm.issue = formService.issue;
 
-  console.log('controller issue', vm.issue);
   //update form
   vm.updatePageOne = function(){
     formService.issue.type = vm.issue.type;
   }
 
+  vm.logout = authService.logout;
+
 }])
 
-app.controller('MapPageController', ['$scope', 'addMapService', '$state', function($scope, ams, $state){
+app.controller('MapPageController', ['$scope', 'addMapService', '$state', 'authService', function($scope, ams, $state, authService){
   console.log('map page controller');
+  
   $scope.$on('$stateChangeSuccess', function() {
     ams.getMap();
   });
+
 }])
 
-app.controller('lastPageController', ['$scope', '$ionicModal', 'addPhotoService', 'submitService', 'formService', function($scope, $ionicModal, aps, submitService, formService){
+app.controller('lastPageController', ['$scope', '$ionicModal', 'addPhotoService', 'submitService', 'formService', 'authService', function($scope, $ionicModal, aps, submitService, formService, authService){
   var vm = this;
 
   // object to hold photo state
@@ -83,7 +96,6 @@ app.controller('lastPageController', ['$scope', '$ionicModal', 'addPhotoService'
 
   // object for errors
   vm.error = formService.error;
-
 
   // takes a picture and stores its base 64 data in a variable
   vm.takePicture = function(){

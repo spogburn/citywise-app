@@ -1,12 +1,21 @@
-app.service('authService', ['$window', function($window){
+app.service('authService', ['$window', '$state', '$ionicHistory', function($window, $state, $ionicHistory){
   var sv = this;
   sv.checkAuth = function(){
     if($window.localStorage.token){
       return true;
     }
     else {
-      return false
-      };
+      return false;
+      }
+  }
+
+  sv.logout = function(){
+    $window.localStorage.clear();
+    $ionicHistory.clearCache()
+    .then(function(){
+      console.log('in then');
+      $state.go('login');
+    })
   }
 
 }])
@@ -252,7 +261,7 @@ app.service('formService', ['$http', function($http){
 }])
 
 // service to send form to server endpoint
-app.service('submitService', ['$http', '$window','addMapService', 'addPhotoService', 'formService', '$ionicLoading', '$state', 'production', function($http, $window, ams, aps, formService, $ionicLoading, $state, production){
+app.service('submitService', ['$http', '$window','addMapService', 'addPhotoService', 'formService', '$ionicLoading', '$state', 'production', '$ionicHistory', function($http, $window, ams, aps, formService, $ionicLoading, $state, production, $ionicHistory){
   var sv = this;
   var url = '';
   var cityWiseSubmit = {};
@@ -297,18 +306,21 @@ app.service('submitService', ['$http', '$window','addMapService', 'addPhotoServi
         console.log('form service issue type', formService.issue.type);
         if(response.status === 200){
           // reset all the objects
-          formService.issue.type = 'roads';
-          formService.issue.txt = '';
-          ams.lat = '';
-          ams.long = '';
-          $ionicLoading.hide();
-          $state.go('success');
+          return $ionicHistory.clearCache()
         } else {
           console.log(JSON.stringify(response));
           $ionicLoading.hide();
           $state.go('failure');
           // run a funcion to show the user the request was not successul
         }
+      })
+      .then(function(){
+        formService.issue.type = 'roads';
+        formService.issue.txt = '';
+        ams.lat = '';
+        ams.long = '';
+        $ionicLoading.hide();
+        $state.go('success');
       })
       .catch(function(err){
         console.log('catch error', JSON.stringify(err));
