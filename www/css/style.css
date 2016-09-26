@@ -45,9 +45,6 @@ body {
   padding-left: 5px;
   padding-right: 5px;
 }
-/*.scroll {
-  height: 100vh;
-}*/
 
 .category{
   margin-top: 10%;
@@ -87,9 +84,6 @@ a {
   background: none;
 }
 
-/*.swiper-slide img {
-  max-height: none !important;
-}*/
 
 .spinner svg {
   width: 60px;

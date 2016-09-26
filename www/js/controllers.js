@@ -3,14 +3,17 @@
 
 app.controller('LoginController', ['$state', '$http', '$cordovaOauth', '$window', '$ionicLoading', '$ionicPopup', 'authService', function($state, $http, $cordovaOauth, $window, $ionicLoading, $ionicPopup, authService){
 
-var CLIENT_ID = '386825602244-09eg7osmai1qi07nbo9maefjpff7h0dm.apps.googleusercontent.com';
+  if (authService.checkAuth()){
+    $state.go('city-wise');
+  } else {
+    $state.go('login')
+  }
 
-var vm = this;
+  var CLIENT_ID = '386825602244-09eg7osmai1qi07nbo9maefjpff7h0dm.apps.googleusercontent.com';
 
-  // if(authService.checkAuth()){
-  //   $state.go('city-wise')
-  // }
-console.log('window token in login', $window.localStorage.token);
+  var vm = this;
+
+  console.log('window token in login', $window.localStorage.token);
 
   // plan to move this to a service to keep logic out of controller
   vm.googleLogin = function() {
@@ -43,7 +46,7 @@ console.log('window token in login', $window.localStorage.token);
           ionic.Platform.exitApp();
         })
       });
-  }
+    }
 
 }])
 
@@ -69,13 +72,27 @@ app.controller('CityWiseController', ['formService', 'addMapService', '$scope', 
     formService.issue.type = vm.issue.type;
   }
 
-  vm.logout = authService.logout;
+
+  vm.logout = function(){
+    $ionicPopup.confirm({
+      title: 'Logout',
+      content: 'Are you sure you want to log out?',
+      okType: 'button-energized'
+    })
+    .then(function(result){
+      if(!result){
+     } else {
+       authService.logout();
+     }
+    })
+  }
+
 
 }])
 
 app.controller('MapPageController', ['$scope', 'addMapService', '$state', 'authService', function($scope, ams, $state, authService){
   console.log('map page controller');
-  
+
   $scope.$on('$stateChangeSuccess', function() {
     ams.getMap();
   });

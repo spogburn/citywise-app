@@ -1,4 +1,4 @@
-app.service('authService', ['$window', '$state', '$ionicHistory', function($window, $state, $ionicHistory){
+app.service('authService', ['$window', '$state', '$ionicHistory',function($window, $state, $ionicHistory){
   var sv = this;
   sv.checkAuth = function(){
     if($window.localStorage.token){
