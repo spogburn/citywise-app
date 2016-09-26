@@ -1,12 +1,12 @@
 'use strict';
 
 
-app.controller('LoginController', ['$state', '$http', '$cordovaOauth', '$window', '$ionicLoading', function($state, $http, $cordovaOauth, $window, $ionicLoading){
+app.controller('LoginController', ['$state', '$http', '$cordovaOauth', '$window', '$ionicLoading', '$ionicPopup', function($state, $http, $cordovaOauth, $window, $ionicLoading, $ionicPopup){
 
 var CLIENT_ID = '386825602244-09eg7osmai1qi07nbo9maefjpff7h0dm.apps.googleusercontent.com';
 
 var vm = this;
-
+  
   vm.googleLogin = function() {
     console.log('login');
     $ionicLoading.show({
@@ -22,14 +22,25 @@ var vm = this;
       $state.go('city-wise')
       })
       .catch(function(error) {
-          console.log('error:', JSON.stringify(error));
+        console.log('error:', JSON.stringify(error));
+        // handle login errors
+        $ionicLoading.hide()
+        .then(function(){
+          return $ionicPopup.alert({
+            title: 'Login error',
+              content: 'We are unable to log you in at this time. Please try again later.',
+              buttons: [{text: 'Okay',type: 'button-energized'}]
+          })
+        })
+        .then(function(){
+          ionic.Platform.exitApp();
+        })
       });
   }
 }])
 
 
-
-/* aps is short for addPhotoSrvice */
+/* ams is short for addMapService */
 app.controller('CityWiseController', ['formService', 'addMapService', '$scope', '$state', '$ionicLoading', function(formService, ams, $scope, $state, $ionicLoading){
 
   $ionicLoading.show({
@@ -37,12 +48,13 @@ app.controller('CityWiseController', ['formService', 'addMapService', '$scope', 
     duration: 1500
   })
 
+  //checks if location is enabled if not prompts to enable
   ams.checkLocationService();
 
   var vm = this;
-  vm.issue = {};
-  vm.issue.type = 'roads' || formService.issue.type;
+  vm.issue = formService.issue;
 
+  console.log('controller issue', vm.issue);
   //update form
   vm.updatePageOne = function(){
     formService.issue.type = vm.issue.type;
@@ -51,6 +63,7 @@ app.controller('CityWiseController', ['formService', 'addMapService', '$scope', 
 }])
 
 app.controller('MapPageController', ['$scope', 'addMapService', '$state', function($scope, ams, $state){
+  console.log('map page controller');
   $scope.$on('$stateChangeSuccess', function() {
     ams.getMap();
   });
@@ -93,8 +106,7 @@ app.controller('lastPageController', ['$scope', '$ionicModal', 'addPhotoService'
       $scope.modal = modal;
     });
     $scope.cancelModal = function(){
-      vm.txt = '';
-      formService.cancel()
+      // formService.cancel() // not using until can improve UX on this
       $scope.modal.hide();
     }
     $scope.openModal = function() {

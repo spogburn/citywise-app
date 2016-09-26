@@ -1,5 +1,5 @@
 {
-  "name": "saySomething",
+  "name": "CityWise",
   "app_id": "",
   "gulpStartupTasks": [
     "sass",

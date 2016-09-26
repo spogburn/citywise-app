@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 var app = angular.module('CityWise', ['ionic', 'ngCordova', 'ngCordovaOauth'])
 
-app.run(function($ionicPlatform, $ionicPopup) {
+app.run(function($ionicPlatform, $ionicPopup, $state, authService) {
   $ionicPlatform.ready(function() {
     if(window.cordova && window.cordova.plugins.Keyboard) {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -37,6 +37,7 @@ app.run(function($ionicPlatform, $ionicPopup) {
         })
       }
     }
+
   });
 });
 
@@ -54,6 +55,13 @@ app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider){
     url: '/login',
     templateUrl: './templates/login.html',
     controller: 'LoginController as LC',
+    // onEnter: function($state, authService){
+    //   if(authService.checkAuth()){
+    //     console.log('authenticated!');
+    //     // event.preventDefault();
+    //     $state.go('city-wise');
+    //   }
+    // },
     cache: false
   })
   .state('city-wise', {

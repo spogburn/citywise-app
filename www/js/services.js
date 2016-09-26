@@ -1,3 +1,16 @@
+app.service('authService', ['$window', function($window){
+  var sv = this;
+  sv.checkAuth = function(){
+    if($window.localStorage.token){
+      return true;
+    }
+    else {
+      return false
+      };
+  }
+
+}])
+
 app.service('addPhotoService', ['$cordovaCamera', '$http', function($cordovaCamera, $http) {
 
   var sv = this;
@@ -28,6 +41,8 @@ sv.addPicture = function() {
     sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
     encodingType: Camera.EncodingType.JPEG,
     allowEdit: 1,
+    targetWidth: 1000,
+    targetHeight: 1000,
     correctOrientation: true
   };
   return $cordovaCamera.getPicture(options)
@@ -58,7 +73,7 @@ app.service('addMapService', ['$cordovaGeolocation', '$ionicPopup', function($co
   sv.map = {};
   sv.lat = '';
   sv.long = '';
-  var posOptions = {timeout: 20000, enableHighAccuracy: false};
+  var posOptions = {timeout: 20000, enableHighAccuracy: true, maximumAge: 1800000};
 
   // checks if user has location services enabled
    sv.checkLocationService = function(){
@@ -96,11 +111,16 @@ app.service('addMapService', ['$cordovaGeolocation', '$ionicPopup', function($co
 
 
     sv.getMap = function(){
+      console.log('get map running');
+      console.log('sv.lat', sv.lat);
+      console.log('sv.long', sv.long);
       $cordovaGeolocation.getCurrentPosition(posOptions)
       .then(function(position){
+      // if the position has not already been set the lat/long is set
        if (sv.lat !== '' && sv.long !== ''){
         positionNow = new google.maps.LatLng(sv.lat, sv.long);
-       } else {
+        console.log('there is already a position');
+      } else {
          sv.lat = position.coords.latitude;
          sv.long = position.coords.longitude
         positionNow = new google.maps.LatLng(sv.lat, sv.long);
@@ -121,7 +141,7 @@ app.service('addMapService', ['$cordovaGeolocation', '$ionicPopup', function($co
         path: 'M0-48c-9.8 0-17.7 7.8-17.7 17.4 0 15.5 17.7 30.6 17.7 30.6s17.7-15.4 17.7-30.6c0-9.6-7.9-17.4-17.7-17.4z',
        fillColor: '#ffc900',
        fillOpacity: 0.8,
-       scale: 1,
+       scale: .9,
        strokeColor: '#444',
        strokeWeight: 6
        }
@@ -131,7 +151,7 @@ app.service('addMapService', ['$cordovaGeolocation', '$ionicPopup', function($co
           position: positionNow,
           title: "Pinpoint your WiseUp!",
           draggable: true,
-          animation: google.maps.Animation.DROP,
+          // animation: google.maps.Animation.DROP,
           icon: image
         });
 
@@ -153,30 +173,29 @@ app.service('addMapService', ['$cordovaGeolocation', '$ionicPopup', function($co
           sv.map.setCenter(marker.getPosition());
           console.log('lat:', sv.lat);
           console.log('long:', sv.long);
-          reverseGeocode();
+          reverseGeocode(sv.lat, sv.long);
         })
-
-        // listens for the lat/long of the marker
-          // marker.addListener('mouseup', function(){
-          //   sv.lat = marker.getPosition().lat();
-          //   sv.long = marker.getPosition().lng();
-          //   sv.map.setCenter(marker.getPosition());
-          //   console.log('lat:', sv.lat);
-          //   console.log('long:', sv.long);
-          //   reverseGeocode();
-          // })
 
         sv.map.addListener('dragend', function(){
           marker.setPosition(sv.map.getCenter())
         })
-        //
-        // sv.map.addListener('click', function(){
-        //   marker.setPosition(sv.map.getCenter())
-        // })
 
 
      }).catch(function(err){
         console.log('error with getting location', err);
+        sv.checkLocationService()
+        $ionicPopup.confirm({
+          title: 'Location error',
+          content: 'There was an error retrieving your location. Try again?',
+          okType: 'button-energized'
+        }).then(function(result){
+         if(!result){
+          ionic.Platform.exitApp();
+         } else {
+           sv.getMap()
+         }
+        })
+
      });
    }
 
@@ -211,8 +230,7 @@ app.service('formService', ['$http', function($http){
  var sv = this;
  sv.issue = {};
  sv.error = {};
-
- sv.issue.type = 'roads';
+ sv.issue.type = "roads";
 
 // cancel modal clear text
  sv.cancel = function(){
@@ -269,8 +287,6 @@ app.service('submitService', ['$http', '$window','addMapService', 'addPhotoServi
           lat: ams.lat,
           long: ams.long
         };
-        formService.issue.txt = '';
-        formService.issue.show = false;
         console.log('cityWiseSubmit', JSON.stringify(cityWiseSubmit));
       })
       .then(function(){
@@ -278,7 +294,13 @@ app.service('submitService', ['$http', '$window','addMapService', 'addPhotoServi
       })
       .then(function(response){
         console.log('response!', response);
+        console.log('form service issue type', formService.issue.type);
         if(response.status === 200){
+          // reset all the objects
+          formService.issue.type = 'roads';
+          formService.issue.txt = '';
+          ams.lat = '';
+          ams.long = '';
           $ionicLoading.hide();
           $state.go('success');
         } else {

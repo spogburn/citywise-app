@@ -1,7 +1,11 @@
 {
-  "name": "saysomething",
+  "name": "CityWise",
   "version": "1.1.1",
-  "description": "saySomething: An Ionic project",
+  "description": "CityWise: An Ionic project",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/spogburn/citywise-client"
+  },
   "dependencies": {
     "gulp": "^3.5.6",
     "gulp-sass": "^2.0.4",
