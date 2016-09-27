@@ -306,6 +306,7 @@ app.service('submitService', ['$http', '$window','addMapService', 'addPhotoServi
         console.log('form service issue type', formService.issue.type);
         if(response.status === 200){
           // reset all the objects
+          $ionicHistory.clearHistory();
           return $ionicHistory.clearCache()
         } else {
           console.log(JSON.stringify(response));

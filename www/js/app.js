@@ -60,7 +60,8 @@ app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider){
   .state('city-wise', {
     url: '/city-wise',
     templateUrl: './templates/city-wise.html',
-    controller: 'CityWiseController as CWC'
+    controller: 'CityWiseController as CWC',
+    cache: false
   })
   .state('city-wise2', {
     url: '/city-wise2',

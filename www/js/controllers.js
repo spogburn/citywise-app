@@ -4,6 +4,7 @@
 app.controller('LoginController', ['$state', '$http', '$cordovaOauth', '$window', '$ionicLoading', '$ionicPopup', 'authService', function($state, $http, $cordovaOauth, $window, $ionicLoading, $ionicPopup, authService){
 
   if (authService.checkAuth()){
+    console.log('authorized from login');
     $state.go('city-wise');
   } else {
     $state.go('login')
@@ -19,7 +20,8 @@ app.controller('LoginController', ['$state', '$http', '$cordovaOauth', '$window'
   vm.googleLogin = function() {
     console.log('login');
     $ionicLoading.show({
-        templateUrl: './templates/loading.html'
+        templateUrl: './templates/loading.html',
+        animation: 'fade-in'
       })
       $cordovaOauth.google(CLIENT_ID, ["https://www.googleapis.com/auth/userinfo.email"])
       .then(function(result) {
@@ -29,7 +31,7 @@ app.controller('LoginController', ['$state', '$http', '$cordovaOauth', '$window'
       console.log('jwt', jwt);
       $window.localStorage.token = jwt.data.token;
       $window.localStorage.email = jwt.data.profile.email;
-      $state.go('city-wise')
+      $state.go('city-wise', {}, {reload:true, notify:true})
       })
       .catch(function(error) {
         console.log('error:', JSON.stringify(error));
@@ -53,11 +55,14 @@ app.controller('LoginController', ['$state', '$http', '$cordovaOauth', '$window'
 
 /* ams is short for addMapService */
 app.controller('CityWiseController', ['formService', 'addMapService', '$scope', '$state', '$ionicLoading', '$ionicPlatform', 'authService', '$ionicPopup', function(formService, ams, $scope, $state, $ionicLoading, $ionicPlatform, authService, $ionicPopup){
+
   console.log('citywise controller');
-  $ionicLoading.show({
-    templateUrl: './templates/loading.html',
-    duration: 1500
-  })
+    $ionicLoading.hide();
+
+  // $ionicLoading.show({
+  //   templateUrl: './templates/loading.html',
+  //   duration: 1000
+  // })
 
   //checks if location is enabled if not prompts to enable
   $ionicPlatform.ready(function(){
