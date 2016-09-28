@@ -72,6 +72,7 @@ app.controller('CityWiseController', ['formService', 'addMapService', '$scope', 
   var vm = this;
   vm.issue = formService.issue;
 
+
   //update form
   vm.updatePageOne = function(){
     formService.issue.type = vm.issue.type;
@@ -97,14 +98,15 @@ app.controller('CityWiseController', ['formService', 'addMapService', '$scope', 
 
 app.controller('MapPageController', ['$scope', 'addMapService', '$state', 'authService', function($scope, ams, $state, authService){
   console.log('map page controller');
-
+  var vm = this;
+  vm.showLoading = ams.showLoading;
   $scope.$on('$stateChangeSuccess', function() {
     ams.getMap();
   });
 
 }])
 
-app.controller('lastPageController', ['$scope', '$ionicModal', 'addPhotoService', 'submitService', 'formService', 'authService', function($scope, $ionicModal, aps, submitService, formService, authService){
+app.controller('lastPageController', ['$scope', '$ionicModal', 'addPhotoService', 'submitService', 'formService', 'authService', '$ionicPlatform', '$location', function($scope, $ionicModal, aps, submitService, formService, authService, $ionicPlatform, $location){
   var vm = this;
 
   // object to hold photo state
@@ -118,6 +120,18 @@ app.controller('lastPageController', ['$scope', '$ionicModal', 'addPhotoService'
 
   // object for errors
   vm.error = formService.error;
+
+  // attempt to change back button, will return to later
+  // $ionicPlatform.registerBackButtonAction(function(){
+  //   var path = $location.path();
+  //   console.log('location', $location.path());
+  //   console.log(path);
+  //   if (path === 'city-wise3'){
+  //     ionic.Platform.exitApp();
+  //   } else {
+  //     $ionicHistory.goBack();
+  //   }
+  // }, 101)
 
   // takes a picture and stores its base 64 data in a variable
   vm.takePicture = function(){

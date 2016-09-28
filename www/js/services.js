@@ -77,13 +77,18 @@ sv.addPicture = function() {
 
 }])
 
-app.service('addMapService', ['$cordovaGeolocation', '$ionicPopup', function($cordovaGeolocation, $ionicPopup){
+app.service('addMapService', ['$cordovaGeolocation', '$ionicPopup', '$location', function($cordovaGeolocation, $ionicPopup, $location){
   var sv = this;
   sv.map = {};
   sv.lat = '';
   sv.long = '';
-  var posOptions = {timeout: 20000, enableHighAccuracy: true, maximumAge: 1800000};
+  sv.showLoading = {};
 
+  var posOptions = {timeout: 5000, enableHighAccuracy: true, maximumAge:180000};
+
+
+
+  console.log($location.$$path);
   // checks if user has location services enabled
    sv.checkLocationService = function(){
      cordova.plugins.diagnostic.isLocationEnabled(
@@ -123,8 +128,16 @@ app.service('addMapService', ['$cordovaGeolocation', '$ionicPopup', function($co
       console.log('get map running');
       console.log('sv.lat', sv.lat);
       console.log('sv.long', sv.long);
+
+      // so loading doesn't display when navigating to page three since controller reruns due to lack of page caching
+      if($location.$$path === '/city-wise2'){
+        sv.showLoading.display = true;
+      }
+
+      // i want to refactore this to make it more modular
       $cordovaGeolocation.getCurrentPosition(posOptions)
       .then(function(position){
+        sv.showLoading.display = false;
       // if the position has not already been set the lat/long is set
        if (sv.lat !== '' && sv.long !== ''){
         positionNow = new google.maps.LatLng(sv.lat, sv.long);
@@ -156,13 +169,13 @@ app.service('addMapService', ['$cordovaGeolocation', '$ionicPopup', function($co
        }
 
       // makes a marker
-        var marker = new google.maps.Marker({
-          position: positionNow,
-          title: "Pinpoint your WiseUp!",
-          draggable: true,
-          // animation: google.maps.Animation.DROP,
-          icon: image
-        });
+      var marker = new google.maps.Marker({
+        position: positionNow,
+        title: "Pinpoint your WiseUp!",
+        draggable: true,
+        // animation: google.maps.Animation.DROP,
+        icon: image
+      });
 
       // Adds the marker to the map;
       marker.setMap(sv.map);
@@ -173,7 +186,6 @@ app.service('addMapService', ['$cordovaGeolocation', '$ionicPopup', function($co
         marker.setPosition(new google.maps.LatLng(clickLat, clickLong));
         sv.map.setCenter(marker.getPosition())
       })
-
 
       // listens for the lat/long of the marker
         marker.addListener('dragend', function(){
@@ -191,22 +203,23 @@ app.service('addMapService', ['$cordovaGeolocation', '$ionicPopup', function($co
 
 
      }).catch(function(err){
+       sv.showLoading.display = false;
         console.log('error with getting location', err);
         sv.checkLocationService()
         $ionicPopup.confirm({
           title: 'Location error',
-          content: 'There was an error retrieving your location. Try again?',
+          content: 'There was an error retrieving your location. Hit okay to try again. If error repeats try changing location settings or restarting your device.',
           okType: 'button-energized'
         }).then(function(result){
          if(!result){
           ionic.Platform.exitApp();
          } else {
-           sv.getMap()
-         }
-        })
-
+          // tries to get location once again
+          sv.getMap();
+        }
      });
-   }
+   })
+ }
 
       // this function reverse geocodes to get city and state name
       function reverseGeocode(lat, long){

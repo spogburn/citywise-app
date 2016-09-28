@@ -10,8 +10,11 @@
           <h4 style="color:#777;text-align:center;">Tell CityWise the location of the problem.</h4>
           <h3 style="text-align:center;">Tap or drag to move the marker.</h3>
         </div>
-        <div id="map" data-tap-disabled="true">
-        </div>
+          <div ng-show="MPC.showLoading.display" class="text-center" style="margin-top:10%;">
+            <ion-spinner icon="spiral"></ion-spinner>
+          </div>
+          <div id="map" data-tap-disabled="true">
+          </div>
       </div>
   <div>
     <div class="form-nav-buttons">
