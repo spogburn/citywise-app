@@ -83,12 +83,11 @@ app.service('addMapService', ['$cordovaGeolocation', '$ionicPopup', '$location',
   sv.lat = '';
   sv.long = '';
   sv.showLoading = {};
+  // for counting errors
+  var count = 0;
 
   var posOptions = {timeout: 5000, enableHighAccuracy: true, maximumAge:180000};
 
-
-
-  console.log($location.$$path);
   // checks if user has location services enabled
    sv.checkLocationService = function(){
      cordova.plugins.diagnostic.isLocationEnabled(
